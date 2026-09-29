@@ -1,0 +1,1015 @@
+{% extends "base.html" %}
+
+{% block title %}Digital Footprint Analyzer{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-shoe-prints"></i> Digital Footprint Analyzer</h1>
+        <p>Track and analyze your online presence across platforms</p>
+    </div>
+    
+    <div class="tool-content">
+        <!-- Quick Analysis Section -->
+        <div class="quick-analysis">
+            <div class="analysis-card">
+                <div class="card-header">
+                    <i class="fas fa-search"></i>
+                    <h2>Online Presence Check</h2>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="usernameInput" placeholder="Enter your username or full name">
+                    <button id="checkFootprint" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Check Footprint
+                    </button>
+                </div>
+                <p class="hint">Enter any name or username to see what information might be publicly available</p>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-header">
+                <h2><i class="fas fa-chart-bar"></i> Analysis Results for: <span id="searchedName">John Doe</span></h2>
+                <div class="risk-score">
+                    <span class="score-label">Privacy Score:</span>
+                    <span class="score-value" id="privacyScore">75</span>/100
+                </div>
+            </div>
+            
+            <!-- Social Media Presence -->
+            <div class="social-media-results">
+                <h3><i class="fas fa-users"></i> Social Media Presence</h3>
+                <div class="platforms-grid">
+                    <div class="platform-result">
+                        <div class="platform-header">
+                            <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                            <span>Facebook</span>
+                            <span class="status public">Public</span>
+                        </div>
+                        <p class="platform-info">Profile found with 450+ friends</p>
+                        <div class="platform-risk">
+                            <span class="risk-label">Risk:</span>
+                            <span class="risk-value medium">Medium</span>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-result">
+                        <div class="platform-header">
+                            <i class="fab fa-twitter" style="color: #1da1f2;"></i>
+                            <span>Twitter</span>
+                            <span class="status private">Private</span>
+                        </div>
+                        <p class="platform-info">Account exists (2,340 tweets)</p>
+                        <div class="platform-risk">
+                            <span class="risk-label">Risk:</span>
+                            <span class="risk-value low">Low</span>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-result">
+                        <div class="platform-header">
+                            <i class="fab fa-instagram" style="color: #e4405f;"></i>
+                            <span>Instagram</span>
+                            <span class="status public">Public</span>
+                        </div>
+                        <p class="platform-info">1,250 followers, 340 posts</p>
+                        <div class="platform-risk">
+                            <span class="risk-label">Risk:</span>
+                            <span class="risk-value high">High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-result">
+                        <div class="platform-header">
+                            <i class="fab fa-linkedin" style="color: #0a66c2;"></i>
+                            <span>LinkedIn</span>
+                            <span class="status public">Public</span>
+                        </div>
+                        <p class="platform-info">Professional profile visible</p>
+                        <div class="platform-risk">
+                            <span class="risk-label">Risk:</span>
+                            <span class="risk-value medium">Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Brokers -->
+            <div class="data-brokers-section">
+                <h3><i class="fas fa-database"></i> Data Broker Listings</h3>
+                <div class="brokers-list">
+                    <div class="broker-item">
+                        <i class="fas fa-user-circle"></i>
+                        <div class="broker-info">
+                            <h4>Whitepages</h4>
+                            <p>Address, phone number, relatives found</p>
+                        </div>
+                        <button class="btn btn-small" onclick="showOptOutGuide('Whitepages')">Opt-Out Guide</button>
+                    </div>
+                    
+                    <div class="broker-item">
+                        <i class="fas fa-search"></i>
+                        <div class="broker-info">
+                            <h4>Spokeo</h4>
+                            <p>Email addresses, social profiles</p>
+                        </div>
+                        <button class="btn btn-small" onclick="showOptOutGuide('Spokeo')">Opt-Out Guide</button>
+                    </div>
+                    
+                    <div class="broker-item">
+                        <i class="fas fa-id-card"></i>
+                        <div class="broker-info">
+                            <h4>BeenVerified</h4>
+                            <p>Background check information</p>
+                        </div>
+                        <button class="btn btn-small" onclick="showOptOutGuide('BeenVerified')">Opt-Out Guide</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommendations -->
+            <div class="recommendations-section">
+                <h3><i class="fas fa-lightbulb"></i> Privacy Recommendations</h3>
+                <div class="recommendations-list">
+                    <div class="recommendation">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <h4>Secure Social Media</h4>
+                            <p>Set Instagram and Facebook profiles to private</p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-trash-alt"></i>
+                        <div>
+                            <h4>Remove from Data Brokers</h4>
+                            <p>Opt-out from Whitepages, Spokeo, and BeenVerified</p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <i class="fas fa-eye-slash"></i>
+                        <div>
+                            <h4>Review Public Information</h4>
+                            <p>Remove personal address and phone number from LinkedIn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Educational Content -->
+        <div class="educational-content">
+            <h2><i class="fas fa-graduation-cap"></i> Understanding Digital Footprints</h2>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Your Digital History</h3>
+                    <p>Everything you do online creates a permanent record:</p>
+                    <ul>
+                        <li>Social media posts and likes</li>
+                        <li>Search engine queries</li>
+                        <li>Online purchases</li>
+                        <li>Location check-ins</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy Risks</h3>
+                    <p>Large digital footprints can lead to:</p>
+                    <ul>
+                        <li>Identity theft</li>
+                        <li>Targeted advertising</li>
+                        <li>Reputation damage</li>
+                        <li>Employment issues</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Protection Tools</h3>
+                    <p>Tools to help manage your footprint:</p>
+                    <ul>
+                        <li>Privacy-focused browsers</li>
+                        <li>VPN services</li>
+                        <li>Data removal services</li>
+                        <li>Social media audits</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Steps -->
+        <div class="action-steps">
+            <h2><i class="fas fa-list-check"></i> Action Steps to Reduce Your Footprint</h2>
+            
+            <div class="steps-timeline">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Audit Social Media</h4>
+                        <p>Review and clean up old posts, photos, and comments</p>
+                        <button class="btn btn-small" onclick="startSocialAudit()">Start Audit</button>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Opt-Out from Data Brokers</h4>
+                        <p>Remove your information from people search sites</p>
+                        <button class="btn btn-small" onclick="showDataBrokerGuide()">View Guide</button>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Enable Privacy Settings</h4>
+                        <p>Adjust settings on all social media accounts</p>
+                        <button class="btn btn-small" onclick="showPrivacySettingsGuide()">Settings Guide</button>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Regular Maintenance</h4>
+                        <p>Schedule quarterly footprint checks</p>
+                        <button class="btn btn-small" onclick="setReminder()">Set Reminder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resources -->
+        <div class="resources-section">
+            <h2><i class="fas fa-external-link-alt"></i> Privacy Resources</h2>
+            
+            <div class="resources-grid">
+                <a href="https://www.whitepages.com/suppression" target="_blank" class="resource-link">
+                    <i class="fas fa-user-slash"></i>
+                    <span>Whitepages Opt-Out</span>
+                </a>
+                
+                <a href="https://www.spokeo.com/optout" target="_blank" class="resource-link">
+                    <i class="fas fa-search-minus"></i>
+                    <span>Spokeo Removal</span>
+                </a>
+                
+                <a href="https://www.beenverified.com/faq/opt-out/" target="_blank" class="resource-link">
+                    <i class="fas fa-id-card"></i>
+                    <span>BeenVerified Opt-Out</span>
+                </a>
+                
+                <a href="https://joindeleteme.com" target="_blank" class="resource-link">
+                    <i class="fas fa-robot"></i>
+                    <span>DeleteMe Service</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Opt-Out Guide -->
+<div id="optOutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h3 id="modalTitle">Opt-Out Guide</h3>
+        <div id="modalContent">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.tool-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tool-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.tool-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.tool-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.quick-analysis {
+    margin: 30px 0;
+}
+
+.analysis-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card-header i {
+    font-size: 2rem;
+    color: #667eea;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.hint {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 12px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: #667eea;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.results-section {
+    margin: 40px 0;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.risk-score {
+    background: #f8f9fa;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.score-value {
+    font-size: 1.5rem;
+    color: #27ae60;
+}
+
+.platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.platform-result {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid #e0e0e0;
+}
+
+.platform-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.platform-header i {
+    font-size: 1.5rem;
+}
+
+.status {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+.status.public {
+    background: #ffeaa7;
+    color: #d35400;
+}
+
+.status.private {
+    background: #a3e4d7;
+    color: #27ae60;
+}
+
+.platform-info {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 10px 0;
+}
+
+.platform-risk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.risk-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.risk-value {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.risk-value.high {
+    background: #ffcccc;
+    color: #e74c3c;
+}
+
+.risk-value.medium {
+    background: #fff3cd;
+    color: #f39c12;
+}
+
+.risk-value.low {
+    background: #d4edda;
+    color: #27ae60;
+}
+
+.data-brokers-section, .recommendations-section {
+    margin: 40px 0;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.brokers-list {
+    margin: 20px 0;
+}
+
+.broker-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.broker-item i {
+    font-size: 1.5rem;
+    color: #667eea;
+}
+
+.broker-info {
+    flex: 1;
+}
+
+.broker-info h4 {
+    margin: 0;
+    color: #333;
+}
+
+.broker-info p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.recommendations-list {
+    margin: 20px 0;
+}
+
+.recommendation {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.recommendation i {
+    font-size: 1.5rem;
+    color: #27ae60;
+    margin-top: 5px;
+}
+
+.recommendation h4 {
+    margin: 0;
+    color: #333;
+}
+
+.recommendation p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.educational-content {
+    margin: 40px 0;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.info-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #667eea;
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    margin: 0 0 15px;
+    color: #333;
+}
+
+.info-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 15px 0;
+}
+
+.info-card li {
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.info-card li:before {
+    content: "•";
+    color: #667eea;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.action-steps {
+    margin: 40px 0;
+}
+
+.steps-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.step {
+    display: flex;
+    gap: 20px;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.step-content p {
+    margin: 0 0 15px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.resources-section {
+    margin: 40px 0;
+    padding: 30px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.resources-section h2 {
+    color: white;
+    margin-bottom: 25px;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.resource-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.resource-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.resource-link i {
+    font-size: 1.5rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .tool-header h1 {
+        font-size: 2rem;
+    }
+    
+    .search-box {
+        flex-direction: column;
+    }
+    
+    .results-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .platforms-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-cards, .steps-timeline {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check Footprint Button
+    const checkBtn = document.getElementById('checkFootprint');
+    const resultsSection = document.getElementById('resultsSection');
+    const usernameInput = document.getElementById('usernameInput');
+    const searchedName = document.getElementById('searchedName');
+    const privacyScore = document.getElementById('privacyScore');
+    
+    if (checkBtn) {
+        checkBtn.addEventListener('click', function() {
+            const name = usernameInput.value.trim();
+            
+            if (!name) {
+                alert('Please enter a name or username to check');
+                usernameInput.focus();
+                return;
+            }
+            
+            // Show loading state
+            checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            checkBtn.disabled = true;
+            
+            // Simulate analysis delay
+            setTimeout(() => {
+                // Update results with entered name
+                searchedName.textContent = name;
+                
+                // Generate random but realistic privacy score (50-90)
+                const score = Math.floor(Math.random() * 40) + 50;
+                privacyScore.textContent = score;
+                
+                // Update score color based on value
+                if (score >= 80) {
+                    privacyScore.style.color = '#27ae60';
+                } else if (score >= 60) {
+                    privacyScore.style.color = '#f39c12';
+                } else {
+                    privacyScore.style.color = '#e74c3c';
+                }
+                
+                // Update platform statuses randomly for demo
+                updatePlatformStatuses();
+                
+                // Show results section with animation
+                resultsSection.style.display = 'block';
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Reset button
+                checkBtn.innerHTML = '<i class="fas fa-search"></i> Check Footprint';
+                checkBtn.disabled = false;
+                
+                // Track the search
+                trackFootprintCheck(name, score);
+                
+            }, 1500);
+        });
+    }
+    
+    // Enter key support
+    usernameInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkBtn.click();
+        }
+    });
+    
+    // Update platform statuses randomly for demo
+    function updatePlatformStatuses() {
+        const platforms = ['Facebook', 'Twitter', 'Instagram', 'LinkedIn'];
+        
+        platforms.forEach(platform => {
+            // For demo, randomly update some statuses
+            if (Math.random() > 0.7) {
+                // Randomly change privacy status
+                const status = Math.random() > 0.5 ? 'public' : 'private';
+                // This would update the UI elements
+                console.log(`${platform} status: ${status}`);
+            }
+        });
+    }
+    
+    // Track footprint check
+    function trackFootprintCheck(name, score) {
+        console.log(`Footprint checked for: ${name}, Score: ${score}`);
+        // Here you would send this to analytics or your backend
+    }
+});
+
+// Modal functions
+function showOptOutGuide(brokerName) {
+    const modal = document.getElementById('optOutModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    
+    const guides = {
+        'Whitepages': `
+            <h4>Steps to Remove from Whitepages:</h4>
+            <ol>
+                <li>Visit <a href="https://www.whitepages.com/suppression" target="_blank">Whitepages Suppression</a></li>
+                <li>Enter your information in the search box</li>
+                <li>Find your listing and click "Remove This Record"</li>
+                <li>Verify your email address</li>
+                <li>Allow 24-48 hours for removal</li>
+            </ol>
+            <p><strong>Note:</strong> You may need to repeat this process annually.</p>
+        `,
+        'Spokeo': `
+            <h4>Steps to Remove from Spokeo:</h4>
+            <ol>
+                <li>Go to <a href="https://www.spokeo.com/optout" target="_blank">Spokeo Opt-Out</a></li>
+                <li>Search for your listing</li>
+                <li>Copy the URL of your profile</li>
+                <li>Submit the URL in the opt-out form</li>
+                <li>Verify your email address</li>
+            </ol>
+            <p><strong>Tip:</strong> Check back in 2-3 days to confirm removal.</p>
+        `,
+        'BeenVerified': `
+            <h4>Steps to Remove from BeenVerified:</h4>
+            <ol>
+                <li>Visit <a href="https://www.beenverified.com/faq/opt-out/" target="_blank">BeenVerified Opt-Out</a></li>
+                <li>Click "Opt-Out" button</li>
+                <li>Search for your profile</li>
+                <li>Click "Proceed with Opt-Out"</li>
+                <li>Complete the verification process</li>
+            </ol>
+            <p><strong>Important:</strong> This only removes you from BeenVerified, not other sites.</p>
+        `
+    };
+    
+    modalTitle.textContent = `${brokerName} Removal Guide`;
+    modalContent.innerHTML = guides[brokerName] || '<p>Guide not available for this broker.</p>';
+    
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    const modal = document.getElementById('optOutModal');
+    modal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('optOutModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Action functions
+function startSocialAudit() {
+    alert('Starting Social Media Audit...\n\nRecommended steps:\n1. Review old posts and photos\n2. Check privacy settings\n3. Remove unnecessary personal info\n4. Audit tagged photos\n\nThis process may take 30-60 minutes per platform.');
+}
+
+function showDataBrokerGuide() {
+    showOptOutGuide('Whitepages');
+}
+
+function showPrivacySettingsGuide() {
+    const modal = document.getElementById('optOutModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    
+    modalTitle.textContent = 'Social Media Privacy Settings Guide';
+    modalContent.innerHTML = `
+        <h4>Recommended Privacy Settings:</h4>
+        
+        <h5>Facebook:</h5>
+        <ul>
+            <li>Set profile to "Friends Only"</li>
+            <li>Limit past posts</li>
+            <li>Disable face recognition</li>
+            <li>Review tags before they appear</li>
+        </ul>
+        
+        <h5>Instagram:</h5>
+        <ul>
+            <li>Set account to private</li>
+            <li>Disable activity status</li>
+            <li>Turn off location services</li>
+            <li>Review story settings</li>
+        </ul>
+        
+        <h5>Twitter:</h5>
+        <ul>
+            <li>Protect your tweets</li>
+            <li>Disable photo tagging</li>
+            <li>Turn off location data</li>
+            <li>Review connected apps</li>
+        </ul>
+        
+        <h5>LinkedIn:</h5>
+        <ul>
+            <li>Adjust public profile visibility</li>
+            <li>Hide connections</li>
+            <li>Disable activity broadcasts</li>
+            <li>Review profile viewing options</li>
+        </ul>
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+function setReminder() {
+    const date = new Date();
+    date.setDate(date.getDate() + 90); // 3 months from now
+    
+    alert(`Reminder set for: ${date.toLocaleDateString()}\n\nYou'll be reminded to:\n• Check your digital footprint\n• Review privacy settings\n• Opt-out from data brokers\n\nMake this a quarterly habit for better privacy!`);
+}
+
+// Initialize with sample data on page load
+window.onload = function() {
+    // Auto-focus on input
+    const usernameInput = document.getElementById('usernameInput');
+    if (usernameInput) {
+        usernameInput.focus();
+    }
+};
+</script>
+{% endblock %}

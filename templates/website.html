@@ -1,0 +1,1377 @@
+{% extends "base.html" %}
+
+{% block title %}Website Safety Explainer{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-globe"></i> Website Safety Explainer</h1>
+        <p>Learn how to identify safe websites and avoid malicious ones</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="analysis-section">
+            <h2><i class="fas fa-search"></i> Check Website URL</h2>
+            <p class="note"><i class="fas fa-info-circle"></i> Enter a website URL to analyze its safety indicators. We don't visit the website, only analyze the URL structure.</p>
+            
+            <form method="POST" class="analysis-form">
+                <div class="form-group">
+                    <label for="url"><i class="fas fa-link"></i> Website URL:</label>
+                    <input type="text" id="url" name="url" 
+                           placeholder="https://example.com or example.com"
+                           class="form-input"
+                           value="{{ result.url if result else '' }}"
+                           required>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Analyze URL
+                    </button>
+                    <button type="button" id="loadExample" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Load Suspicious Example
+                    </button>
+                    <button type="button" id="testSafe" class="btn btn-success">
+                        <i class="fas fa-shield-alt"></i> Test Safe Site
+                    </button>
+                </div>
+                
+                <div class="url-examples">
+                    <p><i class="fas fa-lightbulb"></i> <strong>Quick examples to try:</strong></p>
+                    <div class="example-buttons">
+                        <button type="button" class="example-btn" data-url="https://google.com">google.com</button>
+                        <button type="button" class="example-btn" data-url="https://github.com">github.com</button>
+                        <button type="button" class="example-btn" data-url="http://example.com">example.com</button>
+                        <button type="button" class="example-btn" data-url="faceb00k-login.xyz">Suspicious</button>
+                        <button type="button" class="example-btn" data-url="192.168.1.1">IP Address</button>
+                    </div>
+                </div>
+            </form>
+            
+            {% if result %}
+            <div class="result-card" id="resultCard">
+                <div class="result-header">
+                    <h3><i class="fas fa-chart-bar"></i> Website Analysis Result</h3>
+                    <span class="result-badge" id="resultBadge" style="background-color: 
+                        {% if result.risk_level == 'High' %}#e74c3c
+                        {% elif result.risk_level == 'Medium' %}#f39c12
+                        {% else %}#27ae60{% endif %};">
+                        {{ result.risk_level }} Risk
+                    </span>
+                </div>
+                
+                <div class="result-details">
+                    <div class="url-display">
+                        <h4><i class="fas fa-link"></i> Analyzed URL:</h4>
+                        <div class="url-box">
+                            <code>{{ result.url }}</code>
+                            {% if result.url and result.url.startswith('http') %}
+                            <a href="{{ result.url }}" target="_blank" class="btn btn-small btn-outline" title="Visit site (use caution)">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="https-status">
+                        <h4><i class="fas fa-lock"></i> HTTPS Status:</h4>
+                        <p>
+                            {% if result.has_https %}
+                            <span class="status-good"><i class="fas fa-check-circle"></i> Uses HTTPS (Secure Connection)</span>
+                            <p class="status-desc">This website encrypts data between your browser and their servers.</p>
+                            {% else %}
+                            <span class="status-bad"><i class="fas fa-times-circle"></i> Does NOT use HTTPS</span>
+                            <p class="status-desc">Data sent to this site is not encrypted and can be intercepted.</p>
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    {% if result.domain_analysis %}
+                    <div class="domain-analysis">
+                        <h4><i class="fas fa-search"></i> Domain Analysis:</h4>
+                        <ul>
+                            {% for item in result.domain_analysis %}
+                            <li>{{ item|safe }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="safety-tips">
+                        <h4><i class="fas fa-lightbulb"></i> Safety Tips:</h4>
+                        <ul>
+                            {% for tip in result.safety_tips %}
+                            <li>{{ tip }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    {% if result.risk_level == 'High' %}
+                    <div class="warning-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> High Risk Warning</h4>
+                        <p>This website shows multiple suspicious characteristics. We recommend:</p>
+                        <ul>
+                            <li><strong>Avoid</strong> entering any personal information</li>
+                            <li><strong>Do not</strong> download anything from this site</li>
+                            <li><strong>Do not</strong> enter login credentials</li>
+                            <li><strong>Consider</strong> using website blocking tools</li>
+                        </ul>
+                    </div>
+                    {% elif result.risk_level == 'Medium' %}
+                    <div class="warning-box medium">
+                        <h4><i class="fas fa-exclamation-circle"></i> Caution Advised</h4>
+                        <p>This website shows some suspicious characteristics. Proceed with caution and:</p>
+                        <ul>
+                            <li>Verify the website is legitimate before entering information</li>
+                            <li>Check for contact information and privacy policy</li>
+                            <li>Use a password manager to avoid phishing</li>
+                            <li>Enable browser security features</li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="success-box">
+                        <h4><i class="fas fa-check-circle"></i> Good Security Practices</h4>
+                        <p>This website appears to follow good security practices. Continue to:</p>
+                        <ul>
+                            <li>Verify it's the legitimate site you intended to visit</li>
+                            <li>Use strong, unique passwords for this site</li>
+                            <li>Enable two-factor authentication if available</li>
+                            <li>Keep your browser and security software updated</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="education-section">
+            <h2><i class="fas fa-graduation-cap"></i> Website Safety Education</h2>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-lock"></i> Understanding HTTPS</h3>
+                <div class="topic-content">
+                    <div class="topic-card">
+                        <div class="topic-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>What is HTTPS?</h4>
+                        <p>HTTPS (Hypertext Transfer Protocol Secure) encrypts data between your browser and the website, protecting it from interception by hackers.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4>Look for the Padlock</h4>
+                        <p>A padlock icon in the address bar indicates HTTPS. Click it to view security certificate details and verify the site's identity.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4>HTTPS ≠ Complete Security</h4>
+                        <p>HTTPS only encrypts data in transit. It doesn't mean the website itself is trustworthy or safe from malware.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-exclamation-triangle"></i> Common Website Threats</h3>
+                <div class="threats-grid">
+                    <div class="threat-card danger">
+                        <div class="threat-icon">
+                            <i class="fas fa-skull-crossbones"></i>
+                        </div>
+                        <h4>Phishing Sites</h4>
+                        <p>Fake websites designed to steal login credentials by mimicking legitimate sites like banks or social media.</p>
+                        <div class="threat-tips">
+                            <h5>How to Spot:</h5>
+                            <ul>
+                                <li>Check URL spelling carefully</li>
+                                <li>Look for poor design/grammar</li>
+                                <li>Verify through official apps</li>
+                                <li>Watch for urgency tactics</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="threat-card warning">
+                        <div class="threat-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h4>Malware Distribution</h4>
+                        <p>Sites that automatically download malicious software or trick you into downloading viruses and ransomware.</p>
+                        <div class="threat-tips">
+                            <h5>Protection:</h5>
+                            <ul>
+                                <li>Avoid "urgent" update prompts</li>
+                                <li>Download from official sources only</li>
+                                <li>Use reputable antivirus software</li>
+                                <li>Keep software updated</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="threat-card info">
+                        <div class="threat-icon">
+                            <i class="fas fa-ad"></i>
+                        </div>
+                        <h4>Malvertising</h4>
+                        <p>Malicious ads that can infect your device with malware even without clicking, through "drive-by downloads".</p>
+                        <div class="threat-tips">
+                            <h5>Prevention:</h5>
+                            <ul>
+                                <li>Use ad-blockers (uBlock Origin)</li>
+                                <li>Keep browsers updated</li>
+                                <li>Use script blockers</li>
+                                <li>Avoid shady websites</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-check-circle"></i> Safe Browsing Checklist</h3>
+                <div class="checklist-container">
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Check for HTTPS and padlock icon</h4>
+                                <p>Always look for https:// and the padlock symbol in the address bar</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Verify domain name spelling</h4>
+                                <p>Check for typosquatting: faceb00k.com instead of facebook.com</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Look for contact information</h4>
+                                <p>Legitimate sites usually have clear contact details and privacy policies</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Check for trust seals (verify them)</h4>
+                                <p>Click on trust seals to ensure they're legitimate and not just images</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Read privacy policy if submitting data</h4>
+                                <p>Understand how your data will be used and protected</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Use bookmarks for important sites</h4>
+                                <p>Bookmark legitimate sites to avoid typing URLs and falling for phishing</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Enable browser security features</h4>
+                                <p>Turn on safe browsing, pop-up blockers, and phishing protection</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="check-content">
+                                <h4>Keep browser and plugins updated</h4>
+                                <p>Regular updates patch security vulnerabilities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-tools"></i> Browser Safety Tools</h3>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h4>Google Safe Browsing</h4>
+                        <p>Built into Chrome and other browsers to warn about dangerous sites.</p>
+                        <a href="https://transparencyreport.google.com/safe-browsing/search" class="btn btn-small" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Check Site
+                        </a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>uBlock Origin</h4>
+                        <p>Effective ad-blocker that prevents malicious ads and tracking.</p>
+                        <a href="https://ublockorigin.com/" class="btn btn-small" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Get Extension
+                        </a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <h4>Privacy Badger</h4>
+                        <p>Blocks invisible trackers and protects your privacy automatically.</p>
+                        <a href="https://privacybadger.org/" class="btn btn-small" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Get Extension
+                        </a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-redo"></i>
+                        </div>
+                        <h4>NoScript Security Suite</h4>
+                        <p>Allows JavaScript only from trusted sites, blocking many threats.</p>
+                        <a href="https://noscript.net/" class="btn btn-small" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Get Extension
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-question-circle"></i> What to Do If You Visit a Malicious Site</h3>
+                <div class="steps-container">
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Don't Enter Any Information</h4>
+                                <p>Close the tab immediately without clicking anything or entering data.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Clear Browser Data</h4>
+                                <p>Clear cookies, cache, and browsing history for the affected site.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Run Security Scan</h4>
+                                <p>Scan your device with antivirus/anti-malware software immediately.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Change Passwords</h4>
+                                <p>If you entered any credentials, change those passwords immediately on a secure device.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Report the Site</h4>
+                                <p>Report phishing sites to Google Safe Browsing and the legitimate company being impersonated.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <h4>Monitor Accounts</h4>
+                                <p>Watch for suspicious activity on any accounts you may have accessed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3><i class="fas fa-code"></i> Advanced URL Analysis Tips</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4><i class="fas fa-search"></i> URL Structure Analysis</h4>
+                        <ul>
+                            <li><strong>Check subdomains:</strong> Too many (login.paypal.security.site.com) is suspicious</li>
+                            <li><strong>Watch for @ symbols:</strong> http://paypal.com@malicious.com tricks browsers</li>
+                            <li><strong>Look for encoded characters:</strong> %20 for space, %40 for @ in phishing URLs</li>
+                            <li><strong>Verify TLDs:</strong> .com is common, .xyz or .top can be suspicious</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4><i class="fas fa-mouse-pointer"></i> Hover Before Clicking</h4>
+                        <ul>
+                            <li>Hover over links to see actual destination URL</li>
+                            <li>Check if displayed text matches actual link</li>
+                            <li>Look for URL shorteners (bit.ly, tinyurl) - they hide destination</li>
+                            <li>Right-click and "Copy link address" to inspect</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4><i class="fas fa-certificate"></i> SSL Certificate Checks</h4>
+                        <ul>
+                            <li>Click padlock to view certificate details</li>
+                            <li>Check certificate issuer and validity dates</li>
+                            <li>Look for Extended Validation (EV) certificates</li>
+                            <li>Verify certificate matches domain name</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+:root {
+    --primary-color: #2196f3;
+    --secondary-color: #9c27b0;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #3498db;
+    --light-color: #f8f9fa;
+    --dark-color: #2c3e50;
+    --border-radius: 12px;
+    --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.tool-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.tool-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: var(--border-radius);
+    color: white;
+    box-shadow: var(--box-shadow);
+}
+
+.tool-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.tool-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tool-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.analysis-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.analysis-section h2 {
+    padding: 1.5rem 2rem;
+    background: var(--light-color);
+    color: var(--dark-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.note {
+    padding: 1rem 2rem;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.analysis-form {
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.875rem 1.75rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1976d2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #7b1fa2 100%);
+    color: white;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #219653 100%);
+    color: white;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.url-examples {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+}
+
+.url-examples p {
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.example-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.example-btn {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.example-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.result-card {
+    margin-top: 2rem;
+    border-left: 6px solid #ccc;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.result-header {
+    padding: 1.5rem 2rem;
+    background: var(--light-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.result-header h3 {
+    margin: 0;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.result-badge {
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.result-details {
+    padding: 2rem;
+}
+
+.url-display {
+    margin-bottom: 2rem;
+}
+
+.url-display h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.url-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--light-color);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+}
+
+.url-box code {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    word-break: break-all;
+    color: var(--dark-color);
+}
+
+.https-status, .domain-analysis, .safety-tips {
+    margin-bottom: 2rem;
+}
+
+.https-status h4, .domain-analysis h4, .safety-tips h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-good {
+    color: var(--success-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.status-bad {
+    color: var(--danger-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.status-desc {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.95rem;
+    padding-left: 1.75rem;
+}
+
+.domain-analysis ul, .safety-tips ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.domain-analysis li, .safety-tips li {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    margin-bottom: 0.75rem;
+    background: var(--light-color);
+    border-radius: 8px;
+    position: relative;
+    border-left: 3px solid #ddd;
+}
+
+.domain-analysis li:before {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+}
+
+.safety-tips li:before {
+    content: "💡";
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+}
+
+.warning-box {
+    background: linear-gradient(135deg, #fdf2f2 0%, #fce8e8 100%);
+    border-left: 4px solid var(--danger-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-top: 2rem;
+}
+
+.warning-box.medium {
+    background: linear-gradient(135deg, #fef9f3 0%, #fcf0e3 100%);
+    border-left-color: var(--warning-color);
+}
+
+.success-box {
+    background: linear-gradient(135deg, #f0fff4 0%, #e6f7ec 100%);
+    border-left: 4px solid var(--success-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-top: 2rem;
+}
+
+.warning-box h4, .success-box h4 {
+    color: inherit;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.warning-box h4 {
+    color: var(--danger-color);
+}
+
+.warning-box.medium h4 {
+    color: var(--warning-color);
+}
+
+.success-box h4 {
+    color: var(--success-color);
+}
+
+.warning-box ul, .success-box ul {
+    list-style: none;
+    padding-left: 1.5rem;
+}
+
+.warning-box li, .success-box li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.warning-box li:before, .success-box li:before {
+    content: "•";
+    position: absolute;
+    left: -1rem;
+    font-weight: bold;
+}
+
+.education-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+}
+
+.education-section h2 {
+    color: var(--dark-color);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light-color);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.topic-section {
+    margin-bottom: 3rem;
+}
+
+.topic-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.topic-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.topic-card {
+    padding: 1.5rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+    transition: var(--transition);
+}
+
+.topic-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow);
+}
+
+.topic-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.topic-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+}
+
+.threats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.threat-card {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border-top: 4px solid;
+    transition: var(--transition);
+    background: white;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+}
+
+.threat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.threat-card.danger {
+    border-top-color: var(--danger-color);
+}
+
+.threat-card.warning {
+    border-top-color: var(--warning-color);
+}
+
+.threat-card.info {
+    border-top-color: var(--info-color);
+}
+
+.threat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.threat-card.danger .threat-icon {
+    color: var(--danger-color);
+}
+
+.threat-card.warning .threat-icon {
+    color: var(--warning-color);
+}
+
+.threat-card.info .threat-icon {
+    color: var(--info-color);
+}
+
+.threat-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.threat-tips {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ddd;
+}
+
+.threat-tips h5 {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.threat-tips ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.threat-tips li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    position: relative;
+}
+
+.threat-tips li:before {
+    content: "✓";
+    position: absolute;
+    left: -1rem;
+    font-weight: bold;
+}
+
+.checklist-container {
+    background: var(--light-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+}
+
+.checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.checklist-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.checklist-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.check-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--success-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.check-content h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.check-content p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.tool-card {
+    padding: 1.5rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.tool-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow);
+}
+
+.tool-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.tool-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tool-card p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.steps-container {
+    background: var(--light-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    counter-reset: step-counter;
+}
+
+.step {
+    display: flex;
+    gap: 1.5rem;
+    counter-increment: step-counter;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.step-number:before {
+    content: counter(step-counter);
+}
+
+.step-content {
+    flex: 1;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.step-content h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.step-content p {
+    color: #666;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.tip-card {
+    padding: 1.5rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+}
+
+.tip-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tip-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tip-card li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.tip-card li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0.5rem;
+}
+
+.tip-card strong {
+    color: var(--dark-color);
+}
+
+@media (max-width: 768px) {
+    .tool-container {
+        padding: 1rem;
+    }
+    
+    .tool-header h1 {
+        font-size: 2rem;
+    }
+    
+    .form-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .url-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .step {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .step-number {
+        align-self: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const urlInput = document.getElementById('url');
+    const loadExampleBtn = document.getElementById('loadExample');
+    const testSafeBtn = document.getElementById('testSafe');
+    const exampleBtns = document.querySelectorAll('.example-btn');
+    const form = document.querySelector('.analysis-form');
+    
+    // Load suspicious example
+    if (loadExampleBtn) {
+        loadExampleBtn.addEventListener('click', function() {
+            const suspiciousExamples = [
+                'http://faceb00k-login.xyz',
+                'https://amaz0n-secure-update.club',
+                'http://paypal-verify-security.download',
+                'https://apple-id-confirm.gq',
+                'secure-banking-login.xyz',
+                'http://192.168.100.1/login',
+                'https://netflix-payment-update.top'
+            ];
+            
+            const randomExample = suspiciousExamples[Math.floor(Math.random() * suspiciousExamples.length)];
+            if (urlInput) {
+                urlInput.value = randomExample;
+                urlInput.focus();
+            }
+        });
+    }
+    
+    // Test safe site
+    if (testSafeBtn) {
+        testSafeBtn.addEventListener('click', function() {
+            const safeExamples = [
+                'https://google.com',
+                'https://github.com',
+                'https://wikipedia.org',
+                'https://stackoverflow.com',
+                'https://mozilla.org'
+            ];
+            
+            const randomExample = safeExamples[Math.floor(Math.random() * safeExamples.length)];
+            if (urlInput) {
+                urlInput.value = randomExample;
+                urlInput.focus();
+            }
+        });
+    }
+    
+    // Example buttons
+    exampleBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            if (urlInput) {
+                urlInput.value = url;
+                urlInput.focus();
+            }
+        });
+    });
+    
+    // Form submission - ensure URL has protocol
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let url = urlInput.value.trim();
+            
+            // Remove any whitespace
+            url = url.replace(/\s/g, '');
+            
+            // Add https:// if no protocol specified
+            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                urlInput.value = 'https://' + url;
+            }
+        });
+    }
+    
+    // Auto-focus on URL input if empty
+    if (urlInput && !urlInput.value) {
+        urlInput.focus();
+    }
+    
+    // Add animation to result card
+    const resultCard = document.querySelector('.result-card');
+    if (resultCard) {
+        resultCard.style.opacity = '0';
+        resultCard.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            resultCard.style.transition = 'all 0.5s ease';
+            resultCard.style.opacity = '1';
+            resultCard.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+    // Add copy URL functionality
+    const urlBox = document.querySelector('.url-box');
+    if (urlBox) {
+        const urlText = urlBox.querySelector('code');
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'btn btn-small btn-outline';
+        copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+        copyBtn.title = 'Copy URL';
+        
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(urlText.textContent)
+                .then(() => {
+                    const originalHTML = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    copyBtn.style.background = 'var(--success-color)';
+                    copyBtn.style.color = 'white';
+                    copyBtn.style.borderColor = 'var(--success-color)';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHTML;
+                        copyBtn.style.background = '';
+                        copyBtn.style.color = '';
+                        copyBtn.style.borderColor = '';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    copyBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                    }, 2000);
+                });
+        });
+        
+        // Insert copy button after the visit button if it exists
+        const existingBtn = urlBox.querySelector('.btn-outline');
+        if (existingBtn) {
+            existingBtn.parentNode.insertBefore(copyBtn, existingBtn.nextSibling);
+        } else {
+            urlBox.appendChild(copyBtn);
+        }
+    }
+});
+</script>
+{% endblock %}

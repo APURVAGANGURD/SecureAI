@@ -1,0 +1,1454 @@
+{% extends "base.html" %}
+
+{% block title %}Personal Cyber Security Risk Score{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-chart-line"></i> Personal Cyber Security Risk Score</h1>
+        <p>Assess your security habits and get personalized recommendations</p>
+    </div>
+    
+    <div class="tool-content">
+        {% if score is none %}
+        <div class="assessment-intro">
+            <div class="intro-content">
+                <h2><i class="fas fa-clipboard-check"></i> Security Assessment</h2>
+                <p>Answer these 10 questions honestly to evaluate your cybersecurity habits. Your responses will help calculate a personalized risk score and provide specific recommendations for improvement.</p>
+                
+                <div class="assessment-tips">
+                    <div class="tip">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Time Required: 3-5 minutes</h4>
+                            <p>Quick assessment for immediate insights</p>
+                        </div>
+                    </div>
+                    <div class="tip">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <h4>100% Private</h4>
+                            <p>We don't store your responses</p>
+                        </div>
+                    </div>
+                    <div class="tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h4>Personalized Results</h4>
+                            <p>Get customized security recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form method="POST" class="assessment-form">
+            <div class="question-section">
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">1</span>
+                        <h3>Password Habits</h3>
+                    </div>
+                    <p>How do you manage your passwords?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q1" value="5" required>
+                            <span class="option-content">
+                                <strong>Reuse the same password everywhere</strong>
+                                <small>High risk - one breach compromises all accounts</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q1" value="4">
+                            <span class="option-content">
+                                <strong>Use a few variations of the same password</strong>
+                                <small>Medium-high risk - limited protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q1" value="3">
+                            <span class="option-content">
+                                <strong>Use different passwords but memorize them</strong>
+                                <small>Medium risk - can lead to weak passwords</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q1" value="2">
+                            <span class="option-content">
+                                <strong>Use a password manager for most accounts</strong>
+                                <small>Low risk - good security practice</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q1" value="1">
+                            <span class="option-content">
+                                <strong>Password manager with random unique passwords</strong>
+                                <small>Very low risk - best practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">2</span>
+                        <h3>Two-Factor Authentication (2FA)</h3>
+                    </div>
+                    <p>How many of your important accounts use 2FA?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q2" value="5" required>
+                            <span class="option-content">
+                                <strong>None of my accounts</strong>
+                                <small>High risk - password alone is weak protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q2" value="4">
+                            <span class="option-content">
+                                <strong>1-2 accounts (like email)</strong>
+                                <small>Medium-high risk - limited protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q2" value="3">
+                            <span class="option-content">
+                                <strong>Most important accounts (email, banking)</strong>
+                                <small>Medium risk - basic protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q2" value="2">
+                            <span class="option-content">
+                                <strong>All important accounts with authenticator app</strong>
+                                <small>Low risk - good protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q2" value="1">
+                            <span class="option-content">
+                                <strong>All accounts possible, with security keys</strong>
+                                <small>Very low risk - best protection</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">3</span>
+                        <h3>Phishing Awareness</h3>
+                    </div>
+                    <p>How do you handle suspicious emails or messages?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q3" value="5" required>
+                            <span class="option-content">
+                                <strong>Click links to see what they are</strong>
+                                <small>Very high risk - direct exposure to threats</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q3" value="4">
+                            <span class="option-content">
+                                <strong>Open but don't click suspicious links</strong>
+                                <small>High risk - still vulnerable to tracking</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q3" value="3">
+                            <span class="option-content">
+                                <strong>Delete suspicious messages</strong>
+                                <small>Medium risk - basic caution</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q3" value="2">
+                            <span class="option-content">
+                                <strong>Verify senders and report phishing</strong>
+                                <small>Low risk - proactive approach</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q3" value="1">
+                            <span class="option-content">
+                                <strong>Use email filters and never click unknown links</strong>
+                                <small>Very low risk - best practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">4</span>
+                        <h3>Software Updates</h3>
+                    </div>
+                    <p>How quickly do you update software and devices?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q4" value="5" required>
+                            <span class="option-content">
+                                <strong>Rarely or never update</strong>
+                                <small>Very high risk - vulnerable to known exploits</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q4" value="4">
+                            <span class="option-content">
+                                <strong>Update only when forced to</strong>
+                                <small>High risk - delayed protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q4" value="3">
+                            <span class="option-content">
+                                <strong>Update within a few weeks</strong>
+                                <small>Medium risk - some delay</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q4" value="2">
+                            <span class="option-content">
+                                <strong>Update within a few days</strong>
+                                <small>Low risk - timely updates</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q4" value="1">
+                            <span class="option-content">
+                                <strong>Automatic updates enabled</strong>
+                                <small>Very low risk - immediate protection</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">5</span>
+                        <h3>Public Wi-Fi Usage</h3>
+                    </div>
+                    <p>What do you do when using public Wi-Fi?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q5" value="5" required>
+                            <span class="option-content">
+                                <strong>Banking and shopping without protection</strong>
+                                <small>Very high risk - data easily intercepted</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q5" value="4">
+                            <span class="option-content">
+                                <strong>Check email and browse without VPN</strong>
+                                <small>High risk - sensitive data exposed</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q5" value="3">
+                            <span class="option-content">
+                                <strong>Only browse, no sensitive activities</strong>
+                                <small>Medium risk - limited exposure</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q5" value="2">
+                            <span class="option-content">
+                                <strong>Use VPN for all public Wi-Fi</strong>
+                                <small>Low risk - encrypted connection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q5" value="1">
+                            <span class="option-content">
+                                <strong>Avoid public Wi-Fi, use mobile data</strong>
+                                <small>Very low risk - minimal exposure</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">6</span>
+                        <h3>App Permissions</h3>
+                    </div>
+                    <p>How do you handle app permissions?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q6" value="5" required>
+                            <span class="option-content">
+                                <strong>Accept all permissions without reading</strong>
+                                <small>Very high risk - maximum data collection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q6" value="4">
+                            <span class="option-content">
+                                <strong>Sometimes review permissions</strong>
+                                <small>High risk - inconsistent protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q6" value="3">
+                            <span class="option-content">
+                                <strong>Review but accept most permissions</strong>
+                                <small>Medium risk - some awareness</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q6" value="2">
+                            <span class="option-content">
+                                <strong>Carefully review and deny unnecessary ones</strong>
+                                <small>Low risk - good privacy practice</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q6" value="1">
+                            <span class="option-content">
+                                <strong>Regularly audit and remove unused apps</strong>
+                                <small>Very low risk - best privacy practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">7</span>
+                        <h3>Data Backup</h3>
+                    </div>
+                    <p>How do you back up important data?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q7" value="5" required>
+                            <span class="option-content">
+                                <strong>Never back up anything</strong>
+                                <small>Very high risk - complete data loss potential</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q7" value="4">
+                            <span class="option-content">
+                                <strong>Back up only when I remember</strong>
+                                <small>High risk - inconsistent protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q7" value="3">
+                            <span class="option-content">
+                                <strong>Manual backups occasionally</strong>
+                                <small>Medium risk - basic protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q7" value="2">
+                            <span class="option-content">
+                                <strong>Automatic backups to one location</strong>
+                                <small>Low risk - good protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q7" value="1">
+                            <span class="option-content">
+                                <strong>Follow 3-2-1 backup rule (3 copies, 2 media, 1 offsite)</strong>
+                                <small>Very low risk - best practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">8</span>
+                        <h3>Social Media Privacy</h3>
+                    </div>
+                    <p>What's your approach to social media privacy?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q8" value="5" required>
+                            <span class="option-content">
+                                <strong>Public profiles, share everything</strong>
+                                <small>Very high risk - maximum exposure</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q8" value="4">
+                            <span class="option-content">
+                                <strong>Mix of public and private information</strong>
+                                <small>High risk - significant exposure</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q8" value="3">
+                            <span class="option-content">
+                                <strong>Private profiles but share personal details</strong>
+                                <small>Medium risk - controlled but detailed sharing</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q8" value="2">
+                            <span class="option-content">
+                                <strong>Private profiles, minimal personal info</strong>
+                                <small>Low risk - good privacy practice</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q8" value="1">
+                            <span class="option-content">
+                                <strong>Minimal social media, maximum privacy settings</strong>
+                                <small>Very low risk - best privacy practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">9</span>
+                        <h3>Password Manager Usage</h3>
+                    </div>
+                    <p>Do you use a password manager?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q9" value="5" required>
+                            <span class="option-content">
+                                <strong>No, and I reuse simple passwords</strong>
+                                <small>Very high risk - easily compromised</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q9" value="4">
+                            <span class="option-content">
+                                <strong>No, but I try to use different passwords</strong>
+                                <small>High risk - memory limits security</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q9" value="3">
+                            <span class="option-content">
+                                <strong>Browser's built-in password manager</strong>
+                                <small>Medium risk - limited features</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q9" value="2">
+                            <span class="option-content">
+                                <strong>Dedicated password manager for most accounts</strong>
+                                <small>Low risk - good security practice</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q9" value="1">
+                            <span class="option-content">
+                                <strong>Dedicated manager with 2FA for all accounts</strong>
+                                <small>Very low risk - best security practice</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">10</span>
+                        <h3>Security Software</h3>
+                    </div>
+                    <p>What security software do you use?</p>
+                    <div class="answer-options">
+                        <label>
+                            <input type="radio" name="q10" value="5" required>
+                            <span class="option-content">
+                                <strong>No security software</strong>
+                                <small>Very high risk - no protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q10" value="4">
+                            <span class="option-content">
+                                <strong>Only what came with the device</strong>
+                                <small>High risk - minimal protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q10" value="3">
+                            <span class="option-content">
+                                <strong>Free antivirus software</strong>
+                                <small>Medium risk - basic protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q10" value="2">
+                            <span class="option-content">
+                                <strong>Paid comprehensive security suite</strong>
+                                <small>Low risk - good protection</small>
+                            </span>
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="q10" value="1">
+                            <span class="option-content">
+                                <strong>Multiple layers including firewall, VPN, anti-malware</strong>
+                                <small>Very low risk - best protection</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-calculator"></i> Calculate My Risk Score
+                </button>
+                <button type="button" id="resetForm" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset All Answers
+                </button>
+            </div>
+        </form>
+        
+        {% else %}
+        <div class="results-section">
+            <div class="score-display">
+                <div class="score-card">
+                    <h2><i class="fas fa-chart-pie"></i> Your Security Score</h2>
+                    <div class="score-visual">
+                        <div class="score-circle" style="border-color: {{ color }};">
+                            <span class="score-number">{{ score }}</span>
+                            <span class="score-outof">/100</span>
+                        </div>
+                        <div class="score-details">
+                            <h3 class="risk-level" style="color: {{ color }};">{{ risk_level }}</h3>
+                            <p>Security Assessment Results</p>
+                            <div class="score-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Password Security</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="password-security-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Privacy Protection</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="privacy-protection-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Threat Awareness</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="threat-awareness-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="interpretation">
+                <h3><i class="fas fa-chart-bar"></i> What Your Score Means</h3>
+                <div class="interpretation-grid">
+                    <div class="interpretation-card" id="score-excellent">
+                        <div class="card-header" style="background-color: #27ae60;">
+                            <h4>80-100: Excellent</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>You have strong security habits! Continue maintaining these practices and stay informed about new threats.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-card" id="score-good">
+                        <div class="card-header" style="background-color: #f39c12;">
+                            <h4>60-79: Good</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>You have decent security habits. Focus on improving weaker areas for better protection.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-card" id="score-needs-improvement">
+                        <div class="card-header" style="background-color: #e67e22;">
+                            <h4>40-59: Needs Improvement</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>Your security needs work. Implement the recommendations below to significantly improve your protection.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-card" id="score-high-risk">
+                        <div class="card-header" style="background-color: #e74c3c;">
+                            <h4>0-39: High Risk</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>Immediate action needed. Follow all recommendations to protect yourself from significant cyber risks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recommendations-section">
+                <h3><i class="fas fa-lightbulb"></i> Personalized Recommendations</h3>
+                <div class="recommendations-list">
+                    {% for recommendation in recommendations %}
+                    <div class="recommendation-card">
+                        <div class="rec-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="rec-content">
+                            {{ recommendation }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="action-plan">
+                <h3><i class="fas fa-clipboard-list"></i> Your 30-Day Security Action Plan</h3>
+                <div class="plan-timeline">
+                    <div class="plan-phase">
+                        <h4><i class="fas fa-calendar-week"></i> Week 1: Foundation</h4>
+                        <ul>
+                            <li>Set up a password manager</li>
+                            <li>Enable 2FA on email and banking accounts</li>
+                            <li>Review social media privacy settings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-phase">
+                        <h4><i class="fas fa-calendar-week"></i> Week 2: Protection</h4>
+                        <ul>
+                            <li>Install/update security software</li>
+                            <li>Set up automatic backups</li>
+                            <li>Review app permissions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-phase">
+                        <h4><i class="fas fa-calendar-week"></i> Week 3: Education</h4>
+                        <ul>
+                            <li>Learn about phishing detection</li>
+                            <li>Understand public Wi-Fi risks</li>
+                            <li>Review data broker opt-out options</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-phase">
+                        <h4><i class="fas fa-calendar-week"></i> Week 4: Maintenance</h4>
+                        <ul>
+                            <li>Update all software</li>
+                            <li>Audit online accounts</li>
+                            <li>Test backup restoration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="next-steps">
+                <h3><i class="fas fa-arrow-right"></i> Next Steps</h3>
+                <div class="steps-grid">
+                    <a href="{{ url_for('password_analyzer') }}" class="step-card">
+                        <div class="step-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h4>Improve Passwords</h4>
+                        <p>Use our password analyzer to strengthen your credentials</p>
+                    </a>
+                    
+                    <a href="{{ url_for('two_factor_auth') }}" class="step-card">
+                        <div class="step-icon">
+                            <i class="fas fa-user-lock"></i>
+                        </div>
+                        <h4>Enable 2FA</h4>
+                        <p>Learn how to add extra security to your accounts</p>
+                    </a>
+                    
+                    <a href="{{ url_for('ai_assistant') }}" class="step-card">
+                        <div class="step-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h4>Ask Questions</h4>
+                        <p>Get personalized advice from our AI assistant</p>
+                    </a>
+                    
+                    <a href="{{ url_for('dashboard') }}" class="step-card">
+                        <div class="step-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4>Track Progress</h4>
+                        <p>Monitor your security improvements over time</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="retake-section">
+                <p>Want to improve your score? Implement the recommendations and retake the assessment in 30 days.</p>
+                <a href="{{ url_for('risk_score') }}" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> Retake Assessment
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.assessment-intro {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.assessment-tips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.tip {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+}
+
+.tip i {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.question-section {
+    margin-bottom: 2rem;
+}
+
+.question-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.question-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.question-number {
+    width: 40px;
+    height: 40px;
+    background-color: #8e44ad;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.answer-options {
+    margin-top: 1.5rem;
+}
+
+.answer-options label {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.answer-options label:hover {
+    border-color: #8e44ad;
+    background-color: #f8f9fa;
+}
+
+.answer-options input[type="radio"] {
+    margin-top: 0.25rem;
+    accent-color: #8e44ad;
+}
+
+.option-content {
+    flex: 1;
+}
+
+.option-content small {
+    display: block;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.score-display {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.score-card {
+    display: inline-block;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 400px;
+}
+
+.score-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 10px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-number {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.score-outof {
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+.risk-level {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.score-breakdown {
+    margin-top: 1.5rem;
+}
+
+.breakdown-item {
+    margin-bottom: 1rem;
+}
+
+.breakdown-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.breakdown-bar {
+    height: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    background-color: #8e44ad;
+    border-radius: 5px;
+    width: 0%;
+    transition: width 1s ease;
+}
+
+.interpretation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.interpretation-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.interpretation-card.active {
+    opacity: 1;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    padding: 1rem;
+    color: white;
+    text-align: center;
+}
+
+.card-content {
+    padding: 1.5rem;
+    background: white;
+}
+
+.recommendations-list {
+    margin: 1.5rem 0;
+}
+
+.recommendation-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.rec-icon {
+    color: #27ae60;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.plan-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.plan-phase {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.plan-phase h4 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.plan-phase ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.plan-phase li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.plan-phase li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.step-card {
+    display: block;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    color: #8e44ad;
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    color: #8e44ad;
+    margin-bottom: 1rem;
+}
+
+.retake-section {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+/* Improved Answer Options Styling */
+.answer-options label {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.answer-options label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #8e44ad;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.answer-options label:hover::before {
+    transform: scaleY(1);
+}
+
+.answer-options label:hover {
+    border-color: #8e44ad;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transform: translateX(5px);
+}
+
+.answer-options input[type="radio"]:checked + .option-content {
+    position: relative;
+}
+
+.answer-options input[type="radio"]:checked + .option-content::after {
+    content: '✓ Selected';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #27ae60;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.answer-options input[type="radio"]:checked ~ span {
+    color: #8e44ad;
+    font-weight: 500;
+}
+
+/* Score color variations */
+.score-circle[style*="#27ae60"] {
+    border-color: #27ae60 !important;
+}
+
+.score-circle[style*="#f39c12"] {
+    border-color: #f39c12 !important;
+}
+
+.score-circle[style*="#e67e22"] {
+    border-color: #e67e22 !important;
+}
+
+.score-circle[style*="#e74c3c"] {
+    border-color: #e74c3c !important;
+}
+
+/* Animation for score display */
+@keyframes scoreReveal {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.score-visual {
+    animation: scoreReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Progress bar animation */
+@keyframes fillBar {
+    from { width: 0%; }
+    to { width: var(--target-width); }
+}
+
+.breakdown-fill {
+    animation: fillBar 1.5s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .tool-container {
+        padding: 1rem;
+    }
+    
+    .assessment-intro {
+        padding: 1rem;
+    }
+    
+    .assessment-tips {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .question-card {
+        padding: 1rem;
+    }
+    
+    .score-visual {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .score-card {
+        min-width: 100%;
+        padding: 1rem;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .score-number {
+        font-size: 3rem;
+    }
+    
+    .interpretation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .plan-timeline {
+        grid-template-columns: 1fr;
+    }
+    
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        padding: 1rem;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .score-visual {
+        gap: 2rem;
+    }
+    
+    .score-circle {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .interpretation-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .plan-timeline {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Print styles */
+@media print {
+    .tool-header,
+    .form-actions,
+    .next-steps,
+    .retake-section {
+        display: none;
+    }
+    
+    .question-card,
+    .score-card,
+    .recommendation-card,
+    .plan-phase {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .score-circle {
+        border-width: 5px;
+    }
+}
+
+/* Accessibility improvements */
+.answer-options input[type="radio"]:focus + .option-content {
+    outline: 2px solid #8e44ad;
+    outline-offset: 2px;
+}
+
+.step-card:focus {
+    outline: 2px solid #8e44ad;
+    outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .answer-options label {
+        border: 3px solid currentColor;
+    }
+    
+    .score-circle {
+        border-width: 3px;
+    }
+    
+    .breakdown-fill {
+        border: 1px solid black;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .answer-options label,
+    .score-visual,
+    .breakdown-fill,
+    .step-card {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .question-card,
+    .form-actions,
+    .score-card,
+    .interpretation-card .card-content,
+    .recommendation-card,
+    .plan-phase,
+    .step-card,
+    .retake-section {
+        background: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .answer-options label {
+        background: #34495e;
+        border-color: #4a6278;
+    }
+    
+    .answer-options label:hover {
+        background: #3d566e;
+    }
+    
+    .option-content small {
+        color: #bdc3c7;
+    }
+    
+    .breakdown-bar {
+        background-color: #4a6278;
+    }
+    
+    .step-card:hover {
+        background: #34495e;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reset form functionality
+    const resetBtn = document.getElementById('resetForm');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all answers?')) {
+                document.querySelector('.assessment-form').reset();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Animate score breakdown bars when results are shown
+    const scoreBreakdowns = document.querySelectorAll('.breakdown-fill');
+    if (scoreBreakdowns.length > 0) {
+        // Set target widths based on score categories
+        const score = parseInt('{{ score }}' || 0);
+        
+        // These are example calculations - you would adjust based on actual backend data
+        const passwordScore = Math.min(score * 1.2, 100);
+        const privacyScore = Math.min(score * 0.9, 100);
+        const threatScore = Math.min(score * 1.1, 100);
+        
+        document.getElementById('password-security-fill').style.setProperty('--target-width', passwordScore + '%');
+        document.getElementById('privacy-protection-fill').style.setProperty('--target-width', privacyScore + '%');
+        document.getElementById('threat-awareness-fill').style.setProperty('--target-width', threatScore + '%');
+        
+        // Highlight the appropriate score interpretation card
+        const riskLevel = '{{ risk_level }}'.toLowerCase();
+        const interpretationCards = document.querySelectorAll('.interpretation-card');
+        
+        interpretationCards.forEach(card => {
+            card.classList.remove('active');
+            const header = card.querySelector('h4').textContent.toLowerCase();
+            
+            if (header.includes(riskLevel.replace('-', ' '))) {
+                card.classList.add('active');
+            }
+        });
+    }
+    
+    // Form validation and progress tracking
+    const form = document.querySelector('.assessment-form');
+    if (form) {
+        let answeredCount = 0;
+        const totalQuestions = 10;
+        
+        function updateProgress() {
+            answeredCount = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progress = (answeredCount / totalQuestions) * 100;
+            
+            // You could add a progress bar here if desired
+            console.log(`Progress: ${answeredCount}/${totalQuestions} questions answered`);
+        }
+        
+        form.addEventListener('change', updateProgress);
+        
+        // Auto-save answers to localStorage
+        form.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                const questionName = e.target.name;
+                const answerValue = e.target.value;
+                localStorage.setItem(`risk_assessment_${questionName}`, answerValue);
+            }
+        });
+        
+        // Load saved answers on page load
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+            const savedValue = localStorage.getItem(`risk_assessment_${input.name}`);
+            if (savedValue === input.value) {
+                input.checked = true;
+            }
+        });
+        
+        // Trigger initial progress calculation
+        updateProgress();
+    }
+    
+    // Smooth scrolling for form sections
+    document.querySelectorAll('.question-card').forEach((card, index) => {
+        const radioInputs = card.querySelectorAll('input[type="radio"]');
+        radioInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                // Auto-scroll to next question after selection
+                setTimeout(() => {
+                    const nextCard = card.nextElementSibling;
+                    if (nextCard && nextCard.classList.contains('question-card')) {
+                        nextCard.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
+                }, 300);
+            });
+        });
+    });
+    
+    // Add visual feedback for selected answers
+    document.querySelectorAll('.answer-options label').forEach(label => {
+        const radio = label.querySelector('input[type="radio"]');
+        
+        radio.addEventListener('change', function() {
+            // Remove selected class from all labels in this question
+            const questionLabels = label.closest('.answer-options').querySelectorAll('label');
+            questionLabels.forEach(l => {
+                l.style.boxShadow = 'none';
+                l.style.borderColor = '#e9ecef';
+            });
+            
+            // Add highlight to selected label
+            if (this.checked) {
+                label.style.boxShadow = '0 0 0 3px rgba(142, 68, 173, 0.2)';
+                label.style.borderColor = '#8e44ad';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

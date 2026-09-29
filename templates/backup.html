@@ -1,0 +1,909 @@
+{% extends "base.html" %}
+
+{% block title %}Secure Data Backup Planner{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-hdd"></i> Secure Data Backup Planner</h1>
+        <p>Protect your data from ransomware, hardware failure, and accidental loss</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="risk-awareness">
+            <h2><i class="fas fa-exclamation-triangle"></i> Why Backups Are Critical</h2>
+            
+            <div class="risks-grid">
+                <div class="risk-card">
+                    <div class="risk-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Ransomware</h3>
+                    <p>Malicious software that encrypts your files and demands payment for decryption.</p>
+                    <div class="statistic">
+                        <strong>Attack every 11 seconds</strong> worldwide
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon">
+                        <i class="fas fa-hard-drive"></i>
+                    </div>
+                    <h3>Hardware Failure</h3>
+                    <p>All storage devices eventually fail. Average HDD lifespan: 3-5 years.</p>
+                    <div class="statistic">
+                        <strong>140,000 hard drives</strong> fail weekly in the US
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <h3>Human Error</h3>
+                    <p>Accidental deletion, formatting, or overwriting of important files.</p>
+                    <div class="statistic">
+                        <strong>29% of data loss</strong> is caused by human error
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Physical Damage</h3>
+                    <p>Theft, fire, flood, or other physical damage to your devices.</p>
+                    <div class="statistic">
+                        <strong>43% of companies</strong> that experience major data loss never reopen
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-rule">
+            <h2><i class="fas fa-rule"></i> The 3-2-1 Backup Rule</h2>
+            
+            <div class="rule-explanation">
+                <div class="rule-visual">
+                    <div class="rule-part">
+                        <div class="rule-number">3</div>
+                        <div class="rule-content">
+                            <h3>Three Copies</h3>
+                            <p>Keep at least three copies of your data</p>
+                            <ul>
+                                <li>Original file</li>
+                                <li>Local backup</li>
+                                <li>Offsite backup</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-part">
+                        <div class="rule-number">2</div>
+                        <div class="rule-content">
+                            <h3>Two Different Media</h3>
+                            <p>Use two different types of storage media</p>
+                            <ul>
+                                <li>External hard drive</li>
+                                <li>NAS (Network Attached Storage)</li>
+                                <li>SSD (Solid State Drive)</li>
+                                <li>Tape (for enterprises)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-part">
+                        <div class="rule-number">1</div>
+                        <div class="rule-content">
+                            <h3>One Offsite Copy</h3>
+                            <p>Keep one copy in a different physical location</p>
+                            <ul>
+                                <li>Cloud storage</li>
+                                <li>Bank safety deposit box</li>
+                                <li>Friend/relative's house</li>
+                                <li>Office (if home backup)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-planning">
+            <h2><i class="fas fa-tasks"></i> Create Your Backup Plan</h2>
+            
+            <div class="planning-form">
+                <div class="form-section">
+                    <h3><i class="fas fa-folder-open"></i> What to Backup</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item1" checked>
+                            <label for="item1">
+                                <strong>Documents</strong>
+                                <p>Word, Excel, PDF, presentations</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item2" checked>
+                            <label for="item2">
+                                <strong>Photos & Videos</strong>
+                                <p>Personal memories, creative work</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item3">
+                            <label for="item3">
+                                <strong>Music & Media</strong>
+                                <p>Purchased music, movies, podcasts</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item4" checked>
+                            <label for="item4">
+                                <strong>Email & Contacts</strong>
+                                <p>Important communications, address books</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item5" checked>
+                            <label for="item5">
+                                <strong>Financial Records</strong>
+                                <p>Tax documents, invoices, receipts</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item6">
+                            <label for="item6">
+                                <strong>Software & Licenses</strong>
+                                <p>Installers, serial numbers, product keys</p>
+                            </label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="item7" checked>
+                            <label for="item7">
+                                <strong>Browser Data</strong>
+                                <p>Bookmarks, saved passwords (encrypted)</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-calendar-alt"></i> Backup Schedule</h3>
+                    <div class="schedule-options">
+                        <div class="option">
+                            <input type="radio" id="daily" name="schedule" checked>
+                            <label for="daily">
+                                <strong>Daily</strong>
+                                <p>For active projects or frequently changing data</p>
+                            </label>
+                        </div>
+                        
+                        <div class="option">
+                            <input type="radio" id="weekly" name="schedule">
+                            <label for="weekly">
+                                <strong>Weekly</strong>
+                                <p>For most personal users (recommended)</p>
+                            </label>
+                        </div>
+                        
+                        <div class="option">
+                            <input type="radio" id="monthly" name="schedule">
+                            <label for="monthly">
+                                <strong>Monthly</strong>
+                                <p>For archival data that rarely changes</p>
+                            </label>
+                        </div>
+                        
+                        <div class="option">
+                            <input type="radio" id="continuous" name="schedule">
+                            <label for="continuous">
+                                <strong>Continuous/Real-time</strong>
+                                <p>For critical business data</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-calculator"></i> Estimate Storage Needs</h3>
+                    <div class="storage-calculator">
+                        <div class="input-group">
+                            <label for="documents">Documents (GB):</label>
+                            <input type="range" id="documents" min="1" max="100" value="10">
+                            <span id="documentsValue">10 GB</span>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="photos">Photos (GB):</label>
+                            <input type="range" id="photos" min="1" max="500" value="50">
+                            <span id="photosValue">50 GB</span>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="videos">Videos (GB):</label>
+                            <input type="range" id="videos" min="1" max="1000" value="100">
+                            <span id="videosValue">100 GB</span>
+                        </div>
+                        
+                        <div class="total-storage">
+                            <h4>Estimated Total: <span id="totalValue">160 GB</span></h4>
+                            <p class="note">Multiply by 3 for 3-2-1 rule: <strong id="total321">480 GB</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-solutions">
+            <h2><i class="fas fa-cloud"></i> Backup Solutions Comparison</h2>
+            
+            <div class="solutions-comparison">
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <i class="fas fa-cloud"></i>
+                        <h3>Cloud Backup</h3>
+                    </div>
+                    <div class="solution-content">
+                        <h4>Pros:</h4>
+                        <ul>
+                            <li>Automatic and continuous</li>
+                            <li>Accessible from anywhere</li>
+                            <li>Protects against local disasters</li>
+                            <li>Usually encrypted</li>
+                        </ul>
+                        
+                        <h4>Cons:</h4>
+                        <ul>
+                            <li>Monthly/annual fees</li>
+                            <li>Slow initial backup</li>
+                            <li>Limited by internet speed</li>
+                            <li>Privacy concerns</li>
+                        </ul>
+                        
+                        <h4>Recommended Services:</h4>
+                        <ul>
+                            <li>Backblaze</li>
+                            <li>iDrive</li>
+                            <li>CrashPlan</li>
+                            <li>Google One</li>
+                        </ul>
+                        
+                        <div class="solution-cost">
+                            <strong>Cost:</strong> $5-10/month for personal use
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <i class="fas fa-hdd"></i>
+                        <h3>External Hard Drive</h3>
+                    </div>
+                    <div class="solution-content">
+                        <h4>Pros:</h4>
+                        <ul>
+                            <li>One-time purchase</li>
+                            <li>Fast backup/restore</li>
+                            <li>Complete control</li>
+                            <li>No internet required</li>
+                        </ul>
+                        
+                        <h4>Cons:</h4>
+                        <ul>
+                            <li>Manual process</li>
+                            <li>Can be lost/stolen</li>
+                            <li>Physical failure risk</li>
+                            <li>No offsite protection</li>
+                        </ul>
+                        
+                        <h4>Recommended Products:</h4>
+                        <ul>
+                            <li>WD My Passport</li>
+                            <li>Seagate Backup Plus</li>
+                            <li>Samsung T5/T7 SSD</li>
+                            <li>LaCie Rugged</li>
+                        </ul>
+                        
+                        <div class="solution-cost">
+                            <strong>Cost:</strong> $60-200 one-time
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <i class="fas fa-server"></i>
+                        <h3>NAS (Network Storage)</h3>
+                    </div>
+                    <div class="solution-content">
+                        <h4>Pros:</h4>
+                        <ul>
+                            <li>Centralized for multiple devices</li>
+                            <li>Automated backups</li>
+                            <li>Redundancy (RAID)</li>
+                            <li>Remote access possible</li>
+                        </ul>
+                        
+                        <h4>Cons:</h4>
+                        <ul>
+                            <li>Higher upfront cost</li>
+                            <li>Technical setup required</li>
+                            <li>Still local (needs cloud sync)</li>
+                            <li>Power consumption</li>
+                        </ul>
+                        
+                        <h4>Recommended Brands:</h4>
+                        <ul>
+                            <li>Synology</li>
+                            <li>QNAP</li>
+                            <li>WD My Cloud</li>
+                            <li>Asustor</li>
+                        </ul>
+                        
+                        <div class="solution-cost">
+                            <strong>Cost:</strong> $200-1000+ initial
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-software">
+            <h2><i class="fas fa-download"></i> Backup Software Options</h2>
+            
+            <div class="software-grid">
+                <div class="software-card">
+                    <h4><i class="fab fa-windows"></i> Windows Built-in</h4>
+                    <ul>
+                        <li><strong>File History:</strong> Continuous backup to external drive</li>
+                        <li><strong>Backup and Restore:</strong> System image creation</li>
+                        <li><strong>OneDrive:</strong> Cloud sync with version history</li>
+                    </ul>
+                    <div class="software-rating">
+                        <span class="rating-label">Ease of Use:</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="software-card">
+                    <h4><i class="fab fa-apple"></i> macOS Built-in</h4>
+                    <ul>
+                        <li><strong>Time Machine:</strong> Automatic hourly backups</li>
+                        <li><strong>iCloud:</strong> Cloud storage with sync</li>
+                        <li><strong>Carbon Copy Cloner:</strong> Advanced disk cloning</li>
+                    </ul>
+                    <div class="software-rating">
+                        <span class="rating-label">Ease of Use:</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="software-card">
+                    <h4><i class="fas fa-desktop"></i> Third-Party Software</h4>
+                    <ul>
+                        <li><strong>Veeam Agent:</strong> Free for personal use</li>
+                        <li><strong>Duplicati:</strong> Open source with encryption</li>
+                        <li><strong>Macrium Reflect:</strong> Disk imaging and cloning</li>
+                        <li><strong>Acronis True Image:</strong> Comprehensive solution</li>
+                    </ul>
+                    <div class="software-rating">
+                        <span class="rating-label">Features:</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recovery-plan">
+            <h2><i class="fas fa-ambulance"></i> Disaster Recovery Plan</h2>
+            
+            <div class="recovery-steps">
+                <div class="recovery-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Identify Critical Data</h4>
+                        <p>What absolutely must be recovered first? (Financial documents, client data, etc.)</p>
+                    </div>
+                </div>
+                
+                <div class="recovery-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Establish Recovery Time Objective (RTO)</h4>
+                        <p>How quickly do you need to be back up and running?</p>
+                        <ul>
+                            <li>Personal: 24-48 hours</li>
+                            <li>Business: 1-8 hours</li>
+                            <li>Critical: Minutes to 1 hour</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="recovery-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Test Your Backups</h4>
+                        <p>Regularly test restore process. A backup isn't valid until it's been successfully restored.</p>
+                        <div class="testing-schedule">
+                            <strong>Test Schedule:</strong>
+                            <p>Personal: Every 3-6 months</p>
+                            <p>Business: Monthly or quarterly</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recovery-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Document the Process</h4>
+                        <p>Create written instructions for recovery. Include:
+                        <ul>
+                            <li>Backup locations and passwords</li>
+                            <li>Software installation steps</li>
+                            <li>Contact information for support</li>
+                            <li>Priority restoration order</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="encryption-tips">
+            <h2><i class="fas fa-lock"></i> Backup Encryption</h2>
+            
+            <div class="encryption-info">
+                <div class="encryption-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h4>Why Encrypt Backups?</h4>
+                        <p>Protects sensitive data if backup media is lost or stolen. Especially important for cloud backups and portable drives.</p>
+                    </div>
+                </div>
+                
+                <div class="encryption-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h4>Encryption Tools</h4>
+                        <ul>
+                            <li><strong>VeraCrypt:</strong> Free, open source disk encryption</li>
+                            <li><strong>BitLocker:</strong> Built into Windows Pro/Enterprise</li>
+                            <li><strong>FileVault 2:</strong> Built into macOS</li>
+                            <li><strong>Backup software:</strong> Many include encryption options</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="encryption-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h4>Password Management</h4>
+                        <p>Store encryption passwords in a password manager. Consider sharing with a trusted person in case of emergency.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.risks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.risk-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-top: 4px solid var(--secondary-color);
+}
+
+.risk-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.statistic {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.rule-explanation {
+    margin: 1.5rem 0;
+}
+
+.rule-visual {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.rule-part {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.rule-number {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+.rule-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.rule-content li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.rule-content li:before {
+    content: "•";
+    color: var(--secondary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.planning-form {
+    margin: 1.5rem 0;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.checklist, .schedule-options {
+    margin-top: 1rem;
+}
+
+.checklist-item, .option {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.checklist-item:last-child, .option:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.checklist-item input[type="checkbox"], .option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--secondary-color);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.storage-calculator {
+    margin-top: 1rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    min-width: 150px;
+}
+
+.input-group input[type="range"] {
+    flex: 1;
+}
+
+.input-group span {
+    min-width: 60px;
+    text-align: right;
+}
+
+.total-storage {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.solutions-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.solution-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.solution-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.solution-header i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.solution-content {
+    padding: 1.5rem;
+}
+
+.solution-content h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.solution-content ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.solution-content li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.solution-content li:before {
+    content: "•";
+    color: var(--secondary-color);
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+
+.solution-cost {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: bold;
+}
+
+.software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.software-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.software-card h4 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.software-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.software-card li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.software-card li:before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    color: var(--secondary-color);
+}
+
+.software-rating {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-label {
+    font-weight: 500;
+}
+
+.stars {
+    color: #f39c12;
+}
+
+.recovery-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.recovery-step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.recovery-step .step-number {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.testing-schedule {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.encryption-info {
+    margin: 1.5rem 0;
+}
+
+.encryption-tip {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    flex-shrink: 0;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Storage calculator
+    const documentsSlider = document.getElementById('documents');
+    const photosSlider = document.getElementById('photos');
+    const videosSlider = document.getElementById('videos');
+    const documentsValue = document.getElementById('documentsValue');
+    const photosValue = document.getElementById('photosValue');
+    const videosValue = document.getElementById('videosValue');
+    const totalValue = document.getElementById('totalValue');
+    const total321 = document.getElementById('total321');
+    
+    function updateStorageTotal() {
+        const documents = parseInt(documentsSlider.value);
+        const photos = parseInt(photosSlider.value);
+        const videos = parseInt(videosSlider.value);
+        const total = documents + photos + videos;
+        
+        documentsValue.textContent = documents + ' GB';
+        photosValue.textContent = photos + ' GB';
+        videosValue.textContent = videos + ' GB';
+        totalValue.textContent = total + ' GB';
+        total321.textContent = (total * 3) + ' GB';
+    }
+    
+    if (documentsSlider && photosSlider && videosSlider) {
+        documentsSlider.addEventListener('input', updateStorageTotal);
+        photosSlider.addEventListener('input', updateStorageTotal);
+        videosSlider.addEventListener('input', updateStorageTotal);
+        updateStorageTotal();
+    }
+    
+    // Toggle checklist items
+    const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+    const radioButtons = document.querySelectorAll('.schedule-options input[type="radio"]');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.parentElement.style.opacity = '0.6';
+                this.parentElement.style.textDecoration = 'line-through';
+            } else {
+                this.parentElement.style.opacity = '1';
+                this.parentElement.style.textDecoration = 'none';
+            }
+        });
+    });
+    
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            radioButtons.forEach(rb => {
+                rb.parentElement.style.backgroundColor = '';
+                rb.parentElement.style.borderColor = '';
+            });
+            
+            if (this.checked) {
+                this.parentElement.style.backgroundColor = '#f3f9fe';
+                this.parentElement.style.borderLeft = '4px solid var(--secondary-color)';
+            }
+        });
+        
+        // Trigger initial state
+        if (radio.checked) {
+            radio.parentElement.style.backgroundColor = '#f3f9fe';
+            radio.parentElement.style.borderLeft = '4px solid var(--secondary-color)';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cyber Security Assistant - SecureAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #95a5a6;
+            --border-radius: 15px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --ai-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --user-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .ai-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .ai-header {
+            background: var(--gradient);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .header-text p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .api-status {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .api-status.active {
+            background: rgba(39, 174, 96, 0.2);
+            color: #2ecc71;
+        }
+        
+        .api-status.inactive {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        /* Main Layout */
+        .ai-main {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .ai-main {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 650px;
+        }
+        
+        .chat-header {
+            padding: 1.5rem;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--ai-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .ai-avatar i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .title-text h2 {
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .chat-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-message {
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .ai-message .message-avatar {
+            background: var(--ai-gradient);
+        }
+        
+        .user-message .message-avatar {
+            background: var(--user-gradient);
+        }
+        
+        .message-avatar i {
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ai-message .message-content {
+            border-radius: 0 18px 18px 18px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .user-message .message-content {
+            border-radius: 18px 0 18px 18px;
+            background: var(--user-gradient);
+            border-right: 4px solid var(--accent);
+        }
+        
+        .welcome-message .message-content {
+            background: var(--gradient);
+            color: white;
+            border: none;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-header strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .welcome-message .message-header strong {
+            color: white;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .welcome-message .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .message-text {
+            line-height: 1.6;
+        }
+        
+        .welcome-message .message-text {
+            color: white;
+        }
+        
+        .message-text p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-text p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .capability {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .capability i {
+            font-size: 1.5rem;
+        }
+        
+        /* Input Area */
+        .chat-input-area {
+            padding: 1.5rem;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-wrapper input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .quick-suggestions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .quick-btn {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quick-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar */
+        .ai-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+        
+        .sidebar-card h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .topic-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .topic-item:hover i {
+            color: white;
+        }
+        
+        .topic-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .topic-content h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .topic-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-box i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-box h4 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .stat-box p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+        }
+        
+        .tip-item i {
+            color: var(--success);
+            margin-top: 0.25rem;
+        }
+        
+        /* Examples Section */
+        .examples-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .examples-section h2 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .example-card {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .example-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .example-card h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .example-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .example-card li {
+            padding: 0.5rem 0;
+            color: var(--dark);
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.9rem;
+        }
+        
+        .example-card li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* Scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        /* Markdown Styling */
+        .message-text strong {
+            color: var(--dark);
+        }
+        
+        .message-text ul, .message-text ol {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        .message-text li {
+            margin: 0.25rem 0;
+        }
+        
+        .message-text code {
+            background: #f1f1f1;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .ai-header {
+                padding: 1.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .header-text h1 {
+                font-size: 2rem;
+            }
+            
+            .header-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .ai-main {
+                gap: 1rem;
+            }
+            
+            .chat-container {
+                height: 500px;
+            }
+            
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ai-container">
+        <!-- Header -->
+        <div class="ai-header">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1><i class="fas fa-robot"></i> AI Cyber Security Assistant</h1>
+                    <p>Your Personal 24/7 Security Expert • Ask Anything About Cybersecurity</p>
+                    <div class="api-status {% if ai_enabled %}active{% else %}inactive{% endif %}">
+                        <i class="fas {% if ai_enabled %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                        OpenAI API: {% if ai_enabled %}Active (Enhanced AI) {% else %}Inactive (Using Basic Responses){% endif %}
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>100+</h3>
+                        <p>Security Topics</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Instant</h3>
+                        <p>Expert Advice</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <h3>24/7</h3>
+                        <p>Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="ai-main">
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <div class="ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="title-text">
+                            <h2>SecureAI Assistant</h2>
+                            <div class="status">
+                                <span class="status-dot"></span>
+                                {% if ai_enabled %}
+                                Enhanced AI Mode (GPT-3.5 Turbo)
+                                {% else %}
+                                Basic Mode - Add OpenAI API Key
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button id="newChat" class="btn btn-outline">
+                            <i class="fas fa-plus"></i> New
+                        </button>
+                        <button id="clearChat" class="btn btn-outline">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Message -->
+                    <div class="message ai-message welcome-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>SecureAI Assistant</strong>
+                                <span class="message-time">{{ datetime.now().strftime('%H:%M') if datetime else 'Just now' }}</span>
+                            </div>
+                            <div class="message-text">
+                                <p>👋 <strong>Hello! I'm your AI cybersecurity assistant!</strong></p>
+                                <p>{% if ai_enabled %}
+                                    I'm running in <strong>Enhanced AI Mode</strong> using OpenAI's GPT-3.5 Turbo! 🚀
+                                {% else %}
+                                    I'm currently in <strong>Basic Mode</strong>. For enhanced AI responses, add your OpenAI API key to the .env file.
+                                {% endif %}</p>
+                                <p>I can help you with:</p>
+                                <div class="capabilities-grid">
+                                    <div class="capability">
+                                        <i class="fas fa-key"></i>
+                                        <span>Password Security</span>
+                                    </div>
+                                    <div class="capability">
+                                        <i class="fas fa-fish"></i>
+                                        <span>Phishing Detection</span>
+                                    </div>
+                                    <div class="capability">
+                                        <i class="fas fa-wifi"></i>
+                                        <span>Wi-Fi Safety</span>
+                                    </div>
+                                    <div class="capability">
+                                        <i class="fas fa-shield-virus"></i>
+                                        <span>Virus Protection</span>
+                                    </div>
+                                    <div class="capability">
+                                        <i class="fas fa-user-lock"></i>
+                                        <span>Privacy Settings</span>
+                                    </div>
+                                    <div class="capability">
+                                        <i class="fas fa-save"></i>
+                                        <span>Data Backup</span>
+                                    </div>
+                                </div>
+                                <p>What would you like to learn about today? 🚀</p>
+                                {% if not ai_enabled %}
+                                <p style="margin-top: 1rem; padding: 0.5rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px; border-left: 3px solid #e74c3c;">
+                                    <i class="fas fa-exclamation-triangle"></i> <strong>Tip:</strong> For enhanced AI responses, add your OpenAI API key to the .env file.
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Messages -->
+                    {% for message in messages %}
+                    <div class="message {{ 'user-message' if message.role == 'user' else 'ai-message' }}">
+                        <div class="message-avatar">
+                            {% if message.role == 'user' %}
+                            <i class="fas fa-user"></i>
+                            {% else %}
+                            <i class="fas fa-robot"></i>
+                            {% endif %}
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>{{ 'You' if message.role == 'user' else 'SecureAI Assistant' }}</strong>
+                                <span class="message-time">{{ message.timestamp if message.timestamp else 'Just now' }}</span>
+                            </div>
+                            <div class="message-text">
+                                {{ message.content|safe }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-area">
+                    <form method="POST" id="chatForm">
+                        <div class="input-wrapper">
+                            <input type="text" 
+                                   name="message" 
+                                   id="messageInput"
+                                   placeholder="Ask me anything about cybersecurity... (e.g., 'How do I create a strong password?')"
+                                   required
+                                   autocomplete="off">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                        <div class="quick-suggestions">
+                            <span class="suggestion-label">Quick questions:</span>
+                            <button type="button" class="quick-btn" data-question="How to make strong password?">
+                                <i class="fas fa-key"></i> Strong Password
+                            </button>
+                            <button type="button" class="quick-btn" data-question="Is this email phishing?">
+                                <i class="fas fa-fish"></i> Phishing Check
+                            </button>
+                            <button type="button" class="quick-btn" data-question="Safe public wifi?">
+                                <i class="fas fa-wifi"></i> Wi-Fi Safety
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="ai-sidebar">
+                <!-- Popular Topics -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-bolt"></i> Popular Topics</h3>
+                    <div class="topic-list">
+                        <div class="topic-item" data-topic="password">
+                            <i class="fas fa-key"></i>
+                            <div class="topic-content">
+                                <h4>Password Security</h4>
+                                <p>Strong passwords & managers</p>
+                            </div>
+                        </div>
+                        <div class="topic-item" data-topic="phishing">
+                            <i class="fas fa-fish"></i>
+                            <div class="topic-content">
+                                <h4>Phishing Protection</h4>
+                                <p>Spot & avoid scams</p>
+                            </div>
+                        </div>
+                        <div class="topic-item" data-topic="wifi">
+                            <i class="fas fa-wifi"></i>
+                            <div class="topic-content">
+                                <h4>Wi-Fi Safety</h4>
+                                <p>Secure connections</p>
+                            </div>
+                        </div>
+                        <div class="topic-item" data-topic="virus">
+                            <i class="fas fa-shield-virus"></i>
+                            <div class="topic-content">
+                                <h4>Virus Protection</h4>
+                                <p>Malware prevention</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-chart-line"></i> Your Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <i class="fas fa-comments"></i>
+                            <h4 id="messageCount">{{ messages|length if messages else 0 }}</h4>
+                            <p>Questions Asked</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-star"></i>
+                            <h4>100%</h4>
+                            <p>Accuracy Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-lightbulb"></i> Pro Tips</h3>
+                    <div class="topic-list">
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Be specific for better answers</p>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Ask follow-up questions</p>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Save important advice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Examples -->
+        <div class="examples-section">
+            <h2><i class="fas fa-star"></i> Try Asking Me:</h2>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h4>Password Questions</h4>
+                    <ul>
+                        <li>"What makes a password strong?"</li>
+                        <li>"Best password manager 2024?"</li>
+                        <li>"How often change passwords?"</li>
+                    </ul>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Online Safety</h4>
+                    <ul>
+                        <li>"How to spot fake website?"</li>
+                        <li>"Safe online shopping tips?"</li>
+                        <li>"Best browser security?"</li>
+                    </ul>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Device Security</h4>
+                    <ul>
+                        <li>"Secure smartphone settings?"</li>
+                        <li>"Antivirus for Windows/Mac?"</li>
+                        <li>"Public charging safety?"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatForm = document.getElementById('chatForm');
+            const messageInput = document.getElementById('messageInput');
+            const clearChatBtn = document.getElementById('clearChat');
+            const newChatBtn = document.getElementById('newChat');
+            const topicItems = document.querySelectorAll('.topic-item');
+            const quickBtns = document.querySelectorAll('.quick-btn');
+            const messageCount = document.getElementById('messageCount');
+            
+            // Update message count
+            function updateMessageCount() {
+                const messages = chatMessages.querySelectorAll('.message').length - 1; // Subtract welcome message
+                if (messageCount) {
+                    messageCount.textContent = messages;
+                }
+            }
+            
+            // Scroll to bottom
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Add typing indicator
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div>SecureAI Assistant is typing...</div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                scrollToBottom();
+            }
+            
+            // Remove typing indicator
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+            
+            // Format message text (preserve line breaks, markdown formatting)
+            function formatMessageText(text) {
+                // Convert newlines to paragraphs
+                let formatted = text.replace(/\n\n/g, '</p><p>');
+                formatted = formatted.replace(/\n/g, '<br>');
+                
+                // Convert **bold** to <strong>
+                formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
+                // Convert *italic* to <em>
+                formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                
+                // Convert bullet points
+                formatted = formatted.replace(/•\s*(.*?)(?=\n|$)/g, '<li>$1</li>');
+                formatted = formatted.replace(/<li>/g, '<ul><li>');
+                formatted = formatted.replace(/<\/li>/g, '</li></ul>');
+                formatted = formatted.replace(/<\/ul><ul>/g, '');
+                
+                // Convert numbered lists
+                formatted = formatted.replace(/(\d+)\.\s*(.*?)(?=\n|$)/g, '<li>$2</li>');
+                
+                return formatted;
+            }
+            
+            // Add message
+            function addMessage(role, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}-message`;
+                
+                const avatarIcon = role === 'user' ? 'fa-user' : 'fa-robot';
+                const senderName = role === 'user' ? 'You' : 'SecureAI Assistant';
+                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const formattedContent = formatMessageText(content);
+                
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fas ${avatarIcon}"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <strong>${senderName}</strong>
+                            <span class="message-time">${timestamp}</span>
+                        </div>
+                        <div class="message-text">
+                            ${formattedContent}
+                        </div>
+                    </div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                updateMessageCount();
+                scrollToBottom();
+            }
+            
+            // Handle form submission
+            if (chatForm) {
+                chatForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const message = messageInput.value.trim();
+                    if (!message) return;
+                    
+                    // Add user message
+                    addMessage('user', message);
+                    
+                    // Clear input
+                    messageInput.value = '';
+                    
+                    // Show typing indicator
+                    showTypingIndicator();
+                    
+                    try {
+                        // Send to server
+                        const response = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ message: message })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        // Remove typing indicator
+                        removeTypingIndicator();
+                        
+                        // Add AI response
+                        addMessage('ai', data.response);
+                        
+                    } catch (error) {
+                        console.error('Chat error:', error);
+                        
+                        // Remove typing indicator
+                        removeTypingIndicator();
+                        
+                        // Add error message
+                        addMessage('ai', 'Sorry, I encountered an error. Please try again.');
+                    }
+                });
+            }
+            
+            // Topic items
+            topicItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const topic = this.getAttribute('data-topic');
+                    const questions = {
+                        'password': 'How do I create a strong password?',
+                        'phishing': 'How can I identify phishing emails?',
+                        'wifi': 'Is public Wi-Fi safe to use?',
+                        'virus': 'How do I protect my computer from viruses?'
+                    };
+                    
+                    if (questions[topic]) {
+                        messageInput.value = questions[topic];
+                        messageInput.focus();
+                    }
+                });
+            });
+            
+            // Quick buttons
+            quickBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    messageInput.value = question;
+                    messageInput.focus();
+                });
+            });
+            
+            // Clear chat (server-side)
+            if (clearChatBtn) {
+                clearChatBtn.addEventListener('click', async function() {
+                    if (confirm('Clear all chat messages?')) {
+                        try {
+                            await fetch('/api/clear-chat', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                            
+                            // Remove all messages except welcome message
+                            const messages = chatMessages.querySelectorAll('.message');
+                            messages.forEach((msg, index) => {
+                                if (index > 0) msg.remove();
+                            });
+                            
+                            updateMessageCount();
+                            scrollToBottom();
+                        } catch (error) {
+                            console.error('Clear chat error:', error);
+                            alert('Failed to clear chat. Please try again.');
+                        }
+                    }
+                });
+            }
+            
+            // New chat
+            if (newChatBtn) {
+                newChatBtn.addEventListener('click', async function() {
+                    if (confirm('Start a new conversation?')) {
+                        try {
+                            // Clear server-side chat history
+                            await fetch('/api/clear-chat', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                            
+                            // Clear local chat
+                            const messages = chatMessages.querySelectorAll('.message');
+                            messages.forEach((msg, index) => {
+                                if (index > 0) msg.remove();
+                            });
+                            
+                            updateMessageCount();
+                            messageInput.value = '';
+                            
+                            // Show new welcome message
+                            const welcomeExists = chatMessages.querySelector('.welcome-message');
+                            if (!welcomeExists) {
+                                const welcomeDiv = document.createElement('div');
+                                welcomeDiv.className = 'message ai-message welcome-message';
+                                welcomeDiv.innerHTML = `
+                                    <div class="message-avatar">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-header">
+                                            <strong>SecureAI Assistant</strong>
+                                            <span class="message-time">Just now</span>
+                                        </div>
+                                        <div class="message-text">
+                                            <p>Hello! I'm your AI cybersecurity assistant. How can I help you today?</p>
+                                        </div>
+                                    </div>
+                                `;
+                                chatMessages.insertBefore(welcomeDiv, chatMessages.firstChild);
+                            }
+                        } catch (error) {
+                            console.error('New chat error:', error);
+                            alert('Failed to start new chat. Please try again.');
+                        }
+                    }
+                });
+            }
+            
+            // Enter key to send
+            if (messageInput) {
+                messageInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (chatForm) {
+                            chatForm.dispatchEvent(new Event('submit'));
+                        }
+                    }
+                });
+            }
+            
+            // Initial setup
+            updateMessageCount();
+            scrollToBottom();
+        });
+    </script>
+</body>
+</html>

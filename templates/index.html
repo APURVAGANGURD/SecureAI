@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}SecureAI - Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1><i class="fas fa-shield-alt"></i> SecureAI</h1>
+        <h2>AI-Powered Cybersecurity Awareness Toolkit</h2>
+        <p>Protect your digital life with intelligent security analysis and education</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('risk_score') }}" class="btn btn-primary">
+                <i class="fas fa-chart-line"></i> Check Your Risk Score
+            </a>
+            <a href="{{ url_for('ai_assistant') }}" class="btn btn-secondary">
+                <i class="fas fa-robot"></i> Ask AI Assistant
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <h2 class="section-title">Security Tools & Modules</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h3>Password Security</h3>
+            <p>Analyze password strength, get improvement suggestions, and generate secure passwords.</p>
+            <a href="{{ url_for('password_analyzer') }}" class="btn btn-small">Try Tool</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-fish"></i>
+            </div>
+            <h3>Phishing Detection</h3>
+            <p>AI-powered analysis of emails and messages to detect phishing attempts.</p>
+            <a href="{{ url_for('phishing_analyzer') }}" class="btn btn-small">Try Tool</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-globe"></i>
+            </div>
+            <h3>Website Safety</h3>
+            <p>Check website URLs for safety indicators and learn about HTTPS security.</p>
+            <a href="{{ url_for('website_safety') }}" class="btn btn-small">Try Tool</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-user-secret"></i>
+            </div>
+            <h3>Fake Profile Checker</h3>
+            <p>Identify and protect against fake accounts and impersonation.</p>
+            <a href="{{ url_for('fake_profile') }}" class="btn btn-small">Try Tool</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-user-lock"></i>
+            </div>
+            <h3>2FA Guide</h3>
+            <p>Learn about Two-Factor Authentication and how to enable it on your accounts.</p>
+            <a href="{{ url_for('two_factor_auth') }}" class="btn btn-small">Learn More</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>App Permissions</h3>
+            <p>Analyze mobile app permissions and understand security risks.</p>
+            <a href="{{ url_for('app_permissions') }}" class="btn btn-small">Try Tool</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-wifi"></i>
+            </div>
+            <h3>Public Wi-Fi Safety</h3>
+            <p>Learn risks of public networks and how to protect yourself.</p>
+            <a href="{{ url_for('public_wifi') }}" class="btn btn-small">Learn More</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-hdd"></i>
+            </div>
+            <h3>Data Backup</h3>
+            <p>Plan secure data backups and learn the 3-2-1 backup rule.</p>
+            <a href="{{ url_for('data_backup') }}" class="btn btn-small">Learn More</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h3>AI Assistant</h3>
+            <p>Get answers to cybersecurity questions from our AI assistant.</p>
+            <a href="{{ url_for('ai_assistant') }}" class="btn btn-small">Chat Now</a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Risk Score</h3>
+            <p>Calculate your personal cybersecurity risk score and get recommendations.</p>
+            <a href="{{ url_for('risk_score') }}" class="btn btn-small">Check Score</a>
+        </div>
+    </div>
+</div>
+
+<div class="security-tips">
+    <h2 class="section-title">Quick Security Tips</h2>
+    <div class="tips-grid">
+        <div class="tip-card">
+            <i class="fas fa-user-secret"></i>
+            <h3>Use Strong Passwords</h3>
+            <p>Create unique passwords with at least 12 characters including letters, numbers, and symbols.</p>
+        </div>
+        <div class="tip-card">
+            <i class="fas fa-qrcode"></i>
+            <h3>Enable 2FA</h3>
+            <p>Add an extra layer of security with Two-Factor Authentication on important accounts.</p>
+        </div>
+        <div class="tip-card">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Beware of Phishing</h3>
+            <p>Don't click suspicious links or download attachments from unknown senders.</p>
+        </div>
+        <div class="tip-card">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Update Regularly</h3>
+            <p>Keep your operating system and applications updated with the latest security patches.</p>
+        </div>
+    </div>
+</div>
+
+<div class="disclaimer">
+    <div class="disclaimer-content">
+        <h3><i class="fas fa-exclamation-circle"></i> Important Disclaimer</h3>
+        <p>SecureAI is an educational tool for cybersecurity awareness and defensive practices only. It does not perform hacking, store sensitive user data, or access real systems. This tool is designed to promote security education and safe online practices.</p>
+    </div>
+</div>
+{% endblock %}

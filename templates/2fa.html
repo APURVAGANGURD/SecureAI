@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block title %}Two-Factor Authentication Guide{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-user-lock"></i> Two-Factor Authentication (2FA) Guide</h1>
+        <p>Learn about 2FA/MFA and how to secure your accounts with an extra layer of protection</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="info-section">
+            <h2><i class="fas fa-shield-alt"></i> What is Two-Factor Authentication?</h2>
+            <div class="info-card">
+                <p>Two-Factor Authentication (2FA) adds an extra layer of security to your accounts by requiring two forms of verification:</p>
+                <div class="factors-grid">
+                    <div class="factor-card">
+                        <div class="factor-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Something You Know</h3>
+                        <p>Your password or PIN</p>
+                    </div>
+                    <div class="factor-card">
+                        <div class="factor-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Something You Have</h3>
+                        <p>Your phone, security key, or authenticator app</p>
+                    </div>
+                    <div class="factor-card">
+                        <div class="factor-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h3>Something You Are</h3>
+                        <p>Biometrics like fingerprint or facial recognition</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-section">
+            <h2><i class="fas fa-balance-scale"></i> SMS vs Authenticator App</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>SMS 2FA</th>
+                            <th>Authenticator App</th>
+                            <th>Security Key</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Security Level</td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td><span class="badge badge-success">High</span></td>
+                            <td><span class="badge badge-success">Very High</span></td>
+                        </tr>
+                        <tr>
+                            <td>Requires Internet</td>
+                            <td>Yes (for SMS)</td>
+                            <td>No (generates offline)</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>SIM Swap Risk</td>
+                            <td>High</td>
+                            <td>None</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>Convenience</td>
+                            <td>High</td>
+                            <td>High</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td>Free (usually)</td>
+                            <td>Free</td>
+                            <td>$20-$50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="setup-section">
+            <h2><i class="fas fa-cogs"></i> How to Enable 2FA</h2>
+            <div class="setup-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Choose Your Method</h3>
+                    <p>Select between authenticator app (recommended), SMS, or security key</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Go to Account Settings</h3>
+                    <p>Navigate to Security or Privacy settings in your account</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Enable 2FA</h3>
+                    <p>Follow the prompts to set up your chosen 2FA method</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Save Backup Codes</h3>
+                    <p>Download or write down backup codes in case you lose access</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3>Test It</h3>
+                    <p>Log out and log back in to ensure it works correctly</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="apps-section">
+            <h2><i class="fas fa-mobile-alt"></i> Recommended Authenticator Apps</h2>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <h3>Google Authenticator</h3>
+                    <p>Simple, reliable, and widely supported</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="btn btn-small" target="_blank">Get App</a>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3>Authy</h3>
+                    <p>Cloud backups and multi-device sync</p>
+                    <a href="https://authy.com/download/" class="btn btn-small" target="_blank">Get App</a>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Microsoft Authenticator</h3>
+                    <p>Great for Microsoft ecosystem</p>
+                    <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" class="btn btn-small" target="_blank">Get App</a>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Bitwarden</h3>
+                    <p>Password manager with built-in 2FA</p>
+                    <a href="https://bitwarden.com/" class="btn btn-small" target="_blank">Get App</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-section">
+            <h2><i class="fas fa-key"></i> Backup Codes & Recovery</h2>
+            <div class="backup-info">
+                <div class="backup-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Always Save Backup Codes</h3>
+                        <p>When enabling 2FA, you'll receive 8-10 backup codes. Save them in a secure location (password manager or printed copy). These codes are your lifeline if you lose access to your 2FA device.</p>
+                    </div>
+                </div>
+                <div class="backup-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Multiple Devices</h3>
+                        <p>Some authenticator apps (like Authy) allow multi-device sync. Enable this feature to access your codes from multiple devices.</p>
+                    </div>
+                </div>
+                <div class="backup-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Recovery Email/Phone</h3>
+                        <p>Keep your recovery email and phone number updated. This is often the only way to regain access if you lose everything.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="priority-section">
+            <h2><i class="fas fa-star"></i> Priority Accounts for 2FA</h2>
+            <div class="priority-list">
+                <div class="priority-item critical">
+                    <h3><i class="fas fa-exclamation-circle"></i> Critical (Enable Immediately)</h3>
+                    <ul>
+                        <li>Email accounts (Gmail, Outlook, etc.)</li>
+                        <li>Banking and financial services</li>
+                        <li>Password manager</li>
+                        <li>Social media with personal data</li>
+                    </ul>
+                </div>
+                <div class="priority-item important">
+                    <h3><i class="fas fa-check-circle"></i> Important (Enable Soon)</h3>
+                    <ul>
+                        <li>Cloud storage (Google Drive, Dropbox)</li>
+                        <li>Online shopping (Amazon, eBay)</li>
+                        <li>Government services</li>
+                        <li>Health portals</li>
+                    </ul>
+                </div>
+                <div class="priority-item recommended">
+                    <h3><i class="fas fa-thumbs-up"></i> Recommended (Enable When Possible)</h3>
+                    <ul>
+                        <li>Streaming services</li>
+                        <li>Gaming accounts</li>
+                        <li>Work-related tools</li>
+                        <li>Educational platforms</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.factors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.factor-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+}
+
+.factor-icon {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.comparison-table {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.comparison-table th {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
+
+.comparison-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.comparison-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.setup-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.step-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.app-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.app-icon {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.backup-info {
+    margin: 1.5rem 0;
+}
+
+.backup-tip {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.priority-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.priority-item {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 2px solid;
+}
+
+.priority-item.critical {
+    border-color: #e74c3c;
+    background-color: #fdf2f2;
+}
+
+.priority-item.important {
+    border-color: #f39c12;
+    background-color: #fef9f3;
+}
+
+.priority-item.recommended {
+    border-color: #27ae60;
+    background-color: #f3faf6;
+}
+
+.priority-item h3 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.priority-item ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.priority-item li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.priority-item li:before {
+    content: "•";
+    color: var(--secondary-color);
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+</style>
+{% endblock %}

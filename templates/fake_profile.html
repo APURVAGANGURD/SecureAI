@@ -1,0 +1,1059 @@
+{% extends "base.html" %}
+
+{% block title %}Fake Profile & Impersonation Awareness{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-user-secret"></i> Fake Profile & Impersonation Awareness</h1>
+        <p>Learn to identify and protect against fake accounts and online impersonation</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="warning-banner">
+            <div class="warning-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <h3>Warning: Fake Profiles Are Common</h3>
+                    <p>Scammers create fake accounts to steal information, money, or spread malware. Stay vigilant!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-analyzer">
+            <h2><i class="fas fa-search"></i> Fake Profile Analyzer</h2>
+            <p class="note"><i class="fas fa-info-circle"></i> Use this tool to evaluate suspicious profiles based on common red flags.</p>
+            
+            <div class="analysis-form">
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Profile Characteristics</h3>
+                    <div class="characteristics-grid">
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="newAccount">
+                                <span class="checkmark"></span>
+                                <strong>New Account</strong>
+                                <p>Created recently (within last few months)</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="fewFriends">
+                                <span class="checkmark"></span>
+                                <strong>Few Friends/Followers</strong>
+                                <p>Very low number compared to activity level</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="genericPhotos">
+                                <span class="checkmark"></span>
+                                <strong>Generic Profile Photos</strong>
+                                <p>Stock images or celebrity pictures</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="noPersonalPosts">
+                                <span class="checkmark"></span>
+                                <strong>No Personal Posts</strong>
+                                <p>Only shares memes, links, or reposts</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="inconsistentInfo">
+                                <span class="checkmark"></span>
+                                <strong>Inconsistent Information</strong>
+                                <p>Details don't match across platforms</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="unusualActivity">
+                                <span class="checkmark"></span>
+                                <strong>Unusual Activity Patterns</strong>
+                                <p>Posts at odd hours or too frequently</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="requestsMoney">
+                                <span class="checkmark"></span>
+                                <strong>Requests Money or Personal Info</strong>
+                                <p>Quickly asks for financial help or details</p>
+                            </label>
+                        </div>
+                        
+                        <div class="characteristic">
+                            <label>
+                                <input type="checkbox" id="tooPerfect">
+                                <span class="checkmark"></span>
+                                <strong>Profile Seems Too Perfect</strong>
+                                <p>Model-like photos with flawless appearance</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-comments"></i> Communication Patterns</h3>
+                    <div class="communication-checklist">
+                        <div class="check-item">
+                            <input type="checkbox" id="quickRomance">
+                            <label for="quickRomance">Declares love/affection very quickly</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="avoidsVideo">
+                            <label for="avoidsVideo">Always avoids video calls</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="vagueAnswers">
+                            <label for="vagueAnswers">Gives vague answers to personal questions</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="grammarErrors">
+                            <label for="grammarErrors">Poor grammar or unusual language patterns</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="pushyBehavior">
+                            <label for="pushyBehavior">Pushy or aggressive communication</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="analyzeProfile" class="btn btn-primary">
+                    <i class="fas fa-chart-bar"></i> Analyze Profile
+                </button>
+                <button id="loadExample" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i> Load Example
+                </button>
+            </div>
+            
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3><i class="fas fa-clipboard-check"></i> Analysis Results</h3>
+                        <span class="result-badge" id="riskBadge">Low Risk</span>
+                    </div>
+                    
+                    <div class="result-details">
+                        <div class="risk-score">
+                            <h4>Risk Score: <span id="riskScore">0</span>/100</h4>
+                            <div class="score-bar">
+                                <div class="score-fill" id="scoreFill"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="red-flags">
+                            <h4><i class="fas fa-flag"></i> Red Flags Detected:</h4>
+                            <ul id="redFlagsList"></ul>
+                        </div>
+                        
+                        <div class="recommendations">
+                            <h4><i class="fas fa-lightbulb"></i> Recommendations:</h4>
+                            <div id="recommendationsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="common-scams">
+            <h2><i class="fas fa-exclamation-triangle"></i> Common Fake Profile Scams</h2>
+            
+            <div class="scams-grid">
+                <div class="scam-card">
+                    <div class="scam-icon romance">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Romance Scams</h3>
+                    <p>Fake profiles pretend to seek relationships, then ask for money.</p>
+                    <div class="scam-stat">
+                        <strong>$304 million</strong> lost to romance scams in 2020 (FBI)
+                    </div>
+                </div>
+                
+                <div class="scam-card">
+                    <div class="scam-icon impersonation">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Executive Impersonation</h3>
+                    <p>Pose as company executives to trick employees into wiring money.</p>
+                    <div class="scam-stat">
+                        <strong>$1.8 billion</strong> lost to BEC scams in 2020
+                    </div>
+                </div>
+                
+                <div class="scam-card">
+                    <div class="scam-icon investment">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Investment Scams</h3>
+                    <p>Fake "successful traders" offer investment opportunities.</p>
+                    <div class="scam-stat">
+                        <strong>60% increase</strong> in investment scams during pandemic
+                    </div>
+                </div>
+                
+                <div class="scam-card">
+                    <div class="scam-icon giveaway">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>Giveaway Scams</h3>
+                    <p>Fake celebrity accounts promise prizes for engagement.</p>
+                    <div class="scam-stat">
+                        <strong>Most common</strong> on Instagram and Twitter
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="verification-techniques">
+            <h2><i class="fas fa-check-circle"></i> Profile Verification Techniques</h2>
+            
+            <div class="verification-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Reverse Image Search</h4>
+                        <p>Use Google Images or TinEye to check if profile pictures appear elsewhere online.</p>
+                        <div class="step-tools">
+                            <a href="https://images.google.com" class="btn btn-small" target="_blank">Google Images</a>
+                            <a href="https://tineye.com" class="btn btn-small" target="_blank">TinEye</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Check Social Media Consistency</h4>
+                        <p>Look for the same person on multiple platforms. Real people usually have consistent presence.</p>
+                        <div class="tip">
+                            <strong>Tip:</strong> Search for their name + location or workplace
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Video Call Verification</h4>
+                        <p>Request a quick video call. Scammers often refuse or make excuses.</p>
+                        <div class="warning">
+                            <strong>Note:</strong> Even video calls can be faked with deepfakes
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Check Account History</h4>
+                        <p>Look at when the account was created and its posting history.</p>
+                        <div class="tip">
+                            <strong>Tip:</strong> Real accounts usually have a mix of content types
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Ask Specific Questions</h4>
+                        <p>Questions about local knowledge or mutual connections that would be hard to fake.</p>
+                        <div class="tip">
+                            <strong>Example:</strong> "What's your favorite restaurant near [mutual location]?"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="platform-specific">
+            <h2><i class="fas fa-layer-group"></i> Platform-Specific Tips</h2>
+            
+            <div class="platform-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="facebook">Facebook</button>
+                    <button class="tab-button" data-tab="instagram">Instagram</button>
+                    <button class="tab-button" data-tab="linkedin">LinkedIn</button>
+                    <button class="tab-button" data-tab="dating">Dating Apps</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="facebook">
+                        <h3><i class="fab fa-facebook"></i> Facebook Fake Profile Signs</h3>
+                        <ul>
+                            <li>Few friends with no mutual connections</li>
+                            <li>Profile created recently</li>
+                            <li>No tagged photos with friends</li>
+                            <li>Limited personal information</li>
+                            <li>Friends list includes many people from different countries</li>
+                        </ul>
+                        <div class="report-instructions">
+                            <h4>How to Report:</h4>
+                            <p>Go to profile → Click "..." → Find Support or Report Profile → Follow prompts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="instagram">
+                        <h3><i class="fab fa-instagram"></i> Instagram Fake Profile Signs</h3>
+                        <ul>
+                            <li>Few posts but many followers (often bought)</li>
+                            <li>Generic or stolen photos</li>
+                            <li>Bio with suspicious links</li>
+                            <li>Following thousands but few follow back</li>
+                            <li>Comments are generic ("Great pic!") or spammy</li>
+                        </ul>
+                        <div class="report-instructions">
+                            <h4>How to Report:</h4>
+                            <p>Go to profile → Click "..." → Report → Follow prompts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="linkedin">
+                        <h3><i class="fab fa-linkedin"></i> LinkedIn Fake Profile Signs</h3>
+                        <ul>
+                            <li>Vague or exaggerated job titles</li>
+                            <li>Few connections in their industry</li>
+                            <li>Generic profile photo (stock image)</li>
+                            <li>Endorsements from questionable profiles</li>
+                            <li>Quickly asks to connect outside LinkedIn</li>
+                        </ul>
+                        <div class="report-instructions">
+                            <h4>How to Report:</h4>
+                            <p>Go to profile → Click "More" → Report/Block → Follow prompts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="dating">
+                        <h3><i class="fas fa-heart"></i> Dating App Fake Profile Signs</h3>
+                        <ul>
+                            <li>Photos seem too professional</li>
+                            <li>Quickly wants to move off the app</li>
+                            <li>Vague answers about work/location</li>
+                            <li>Asks for money or financial help</li>
+                            <li>Claims to be overseas or in military</li>
+                        </ul>
+                        <div class="report-instructions">
+                            <h4>How to Report:</h4>
+                            <p>Use in-app reporting features immediately if suspicious</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="protective-measures">
+            <h2><i class="fas fa-shield-alt"></i> Protective Measures</h2>
+            
+            <div class="measures-grid">
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h4>Privacy Settings</h4>
+                    <p>Set profiles to private/friends only. Limit who can see your information.</p>
+                </div>
+                
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-eye-slash"></i>
+                    </div>
+                    <h4>Limit Personal Info</h4>
+                    <p>Don't share birth date, address, phone number, or financial details publicly.</p>
+                </div>
+                
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Verify Mutual Connections</h4>
+                    <p>Check with mutual friends before accepting requests from unfamiliar people.</p>
+                </div>
+                
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>Regular Audits</h4>
+                    <p>Periodically review your friends/followers and remove suspicious accounts.</p>
+                </div>
+                
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h4>Report Suspicious Accounts</h4>
+                    <p>Report fake profiles to help protect others and get them removed.</p>
+                </div>
+                
+                <div class="measure-card">
+                    <div class="measure-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4>Educate Others</h4>
+                    <p>Share knowledge about fake profiles with friends and family, especially seniors.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="emergency-response">
+            <h2><i class="fas fa-ambulance"></i> What to Do If Targeted</h2>
+            
+            <div class="response-checklist">
+                <div class="response-item">
+                    <input type="checkbox" id="response1">
+                    <label for="response1">
+                        <strong>Stop Communication Immediately</strong>
+                        <p>Do not engage further with the suspicious account</p>
+                    </label>
+                </div>
+                
+                <div class="response-item">
+                    <input type="checkbox" id="response2">
+                    <label for="response2">
+                        <strong>Report the Profile</strong>
+                        <p>Use platform reporting tools to flag the fake account</p>
+                    </label>
+                </div>
+                
+                <div class="response-item">
+                    <input type="checkbox" id="response3">
+                    <label for="response3">
+                        <strong>Block the Account</strong>
+                        <p>Prevent further contact from that profile</p>
+                    </label>
+                </div>
+                
+                <div class="response-item">
+                    <input type="checkbox" id="response4">
+                    <label for="response4">
+                        <strong>Warn Mutual Connections</strong>
+                        <p>Alert friends who might also be targeted</p>
+                    </label>
+                </div>
+                
+                <div class="response-item">
+                    <input type="checkbox" id="response5">
+                    <label for="response5">
+                        <strong>Check for Compromise</strong>
+                        <p>If you shared personal info, monitor accounts for suspicious activity</p>
+                    </label>
+                </div>
+                
+                <div class="response-item">
+                    <input type="checkbox" id="response6">
+                    <label for="response6">
+                        <strong>Report to Authorities (If Financial Loss)</strong>
+                        <p>Contact local police and relevant agencies like FTC or IC3</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources-section">
+            <h2><i class="fas fa-life-ring"></i> Resources & Help</h2>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4><i class="fas fa-gavel"></i> Government Resources</h4>
+                    <ul>
+                        <li><a href="https://www.ftc.gov" target="_blank">FTC - Identity Theft</a></li>
+                        <li><a href="https://www.ic3.gov" target="_blank">FBI IC3 (Internet Crime)</a></li>
+                        <li><a href="https://www.usa.gov/online-safety" target="_blank">USA.gov Online Safety</a></li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-hands-helping"></i> Support Organizations</h4>
+                    <ul>
+                        <li><a href="https://www.connectsafely.org" target="_blank">ConnectSafely</a></li>
+                        <li><a href="https://www.staysafeonline.org" target="_blank">Stay Safe Online</a></li>
+                        <li><a href="https://www.cybercivilrights.org" target="_blank">Cyber Civil Rights</a></li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <h4><i class="fas fa-book"></i> Educational Materials</h4>
+                    <ul>
+                        <li><a href="https://www.consumer.ftc.gov/articles/0003-phishing" target="_blank">FTC Phishing Info</a></li>
+                        <li><a href="https://www.onguardonline.gov" target="_blank">OnGuard Online</a></li>
+                        <li><a href="https://www.getsafeonline.org" target="_blank">Get Safe Online</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.warning-banner {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.warning-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.warning-content i {
+    font-size: 2rem;
+    color: #ffc107;
+    flex-shrink: 0;
+}
+
+.characteristics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.characteristic {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    transition: var(--transition);
+}
+
+.characteristic:hover {
+    border-color: var(--secondary-color);
+}
+
+.characteristic label {
+    display: block;
+    cursor: pointer;
+}
+
+.characteristic input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.communication-checklist {
+    margin: 1rem 0;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--secondary-color);
+}
+
+.result-container {
+    margin-top: 2rem;
+}
+
+.score-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.score-fill {
+    height: 100%;
+    background-color: #27ae60;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.red-flags ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 1rem 0;
+}
+
+.red-flags li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.red-flags li:before {
+    content: "✗";
+    color: #e74c3c;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.scams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.scam-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-top: 4px solid;
+}
+
+.scam-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scam-icon.romance {
+    background-color: #fdf2f8;
+    color: #db2777;
+    border-color: #db2777;
+}
+
+.scam-icon.impersonation {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border-color: #4b5563;
+}
+
+.scam-icon.investment {
+    background-color: #f0f9ff;
+    color: #0284c7;
+    border-color: #0284c7;
+}
+
+.scam-icon.giveaway {
+    background-color: #fef3c7;
+    color: #d97706;
+    border-color: #d97706;
+}
+
+.scam-stat {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.verification-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-tools {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.tip, .warning {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.tip {
+    background-color: #f0f9ff;
+    border-left: 4px solid #0284c7;
+}
+
+.warning {
+    background-color: #fef3c7;
+    border-left: 4px solid #d97706;
+}
+
+.platform-tabs {
+    margin: 1.5rem 0;
+}
+
+.tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    padding: 0.75rem 1.5rem;
+    background: #e9ecef;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.tab-button.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: #dee2e6;
+}
+
+.tab-pane {
+    display: none;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.tab-pane ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 1rem 0;
+}
+
+.tab-pane li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.tab-pane li:before {
+    content: "•";
+    color: var(--secondary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.report-instructions {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.measures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.measure-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.measure-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.response-checklist {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 1.5rem 0;
+}
+
+.response-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.response-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.response-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--secondary-color);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.response-item label {
+    flex: 1;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.resource-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.resource-card h4 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resource-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.resource-card li {
+    margin-bottom: 0.75rem;
+}
+
+.resource-card a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.resource-card a:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and panes
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding pane
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Load example fake profile
+    const loadExampleBtn = document.getElementById('loadExample');
+    if (loadExampleBtn) {
+        loadExampleBtn.addEventListener('click', function() {
+            // Check common red flags
+            document.getElementById('newAccount').checked = true;
+            document.getElementById('fewFriends').checked = true;
+            document.getElementById('genericPhotos').checked = true;
+            document.getElementById('noPersonalPosts').checked = true;
+            document.getElementById('requestsMoney').checked = true;
+            document.getElementById('quickRomance').checked = true;
+            document.getElementById('avoidsVideo').checked = true;
+            document.getElementById('grammarErrors').checked = true;
+            
+            // Trigger analysis
+            document.getElementById('analyzeProfile').click();
+        });
+    }
+    
+    // Profile analysis
+    const analyzeProfileBtn = document.getElementById('analyzeProfile');
+    const resultContainer = document.getElementById('resultContainer');
+    const riskScoreEl = document.getElementById('riskScore');
+    const scoreFillEl = document.getElementById('scoreFill');
+    const riskBadgeEl = document.getElementById('riskBadge');
+    const redFlagsListEl = document.getElementById('redFlagsList');
+    const recommendationsListEl = document.getElementById('recommendationsList');
+    
+    if (analyzeProfileBtn) {
+        analyzeProfileBtn.addEventListener('click', function() {
+            let score = 0;
+            const redFlags = [];
+            const recommendations = [];
+            
+            // Characteristic checkboxes (each worth 10 points)
+            const characteristics = [
+                { id: 'newAccount', flag: 'Account is very new', rec: 'Be cautious with new accounts - wait to establish trust' },
+                { id: 'fewFriends', flag: 'Very few friends/followers', rec: 'Check mutual connections - real people usually have networks' },
+                { id: 'genericPhotos', flag: 'Generic or stock profile photos', rec: 'Perform reverse image search on profile pictures' },
+                { id: 'noPersonalPosts', flag: 'No personal content or posts', rec: 'Look for genuine personal updates and interactions' },
+                { id: 'inconsistentInfo', flag: 'Inconsistent personal information', rec: 'Verify details across multiple platforms' },
+                { id: 'unusualActivity', flag: 'Unusual posting patterns', rec: 'Real people usually have consistent activity patterns' },
+                { id: 'requestsMoney', flag: 'Requests money or personal info', rec: 'NEVER send money or sensitive information to online contacts' },
+                { id: 'tooPerfect', flag: 'Profile seems unrealistically perfect', rec: 'Be skeptical of model-like perfection - it\'s often fake' }
+            ];
+            
+            characteristics.forEach(char => {
+                const checkbox = document.getElementById(char.id);
+                if (checkbox && checkbox.checked) {
+                    score += 10;
+                    redFlags.push(char.flag);
+                    recommendations.push(char.rec);
+                }
+            });
+            
+            // Communication patterns (each worth 5 points)
+            const communication = [
+                { id: 'quickRomance', flag: 'Declares affection too quickly', rec: 'Real relationships develop gradually - quick declarations are red flags' },
+                { id: 'avoidsVideo', flag: 'Avoids video calls', rec: 'Insist on video verification before developing relationship' },
+                { id: 'vagueAnswers', flag: 'Gives vague personal answers', rec: 'Ask specific questions that require local or personal knowledge' },
+                { id: 'grammarErrors', flag: 'Poor grammar/unusual language', rec: 'Look for consistent language patterns - scammers often use templates' },
+                { id: 'pushyBehavior', flag: 'Pushy or aggressive behavior', rec: 'Respectful people don\'t pressure you - this is a major red flag' }
+            ];
+            
+            communication.forEach(comm => {
+                const checkbox = document.getElementById(comm.id);
+                if (checkbox && checkbox.checked) {
+                    score += 5;
+                    if (!redFlags.includes(comm.flag)) redFlags.push(comm.flag);
+                    if (!recommendations.includes(comm.rec)) recommendations.push(comm.rec);
+                }
+            });
+            
+            // Cap score at 100
+            score = Math.min(100, score);
+            
+            // Update display
+            riskScoreEl.textContent = score;
+            scoreFillEl.style.width = score + '%';
+            
+            // Set risk level and color
+            let riskLevel = '';
+            let color = '';
+            
+            if (score >= 70) {
+                riskLevel = 'High Risk';
+                color = '#e74c3c';
+            } else if (score >= 40) {
+                riskLevel = 'Medium Risk';
+                color = '#f39c12';
+            } else {
+                riskLevel = 'Low Risk';
+                color = '#27ae60';
+            }
+            
+            riskBadgeEl.textContent = riskLevel;
+            riskBadgeEl.style.backgroundColor = color;
+            scoreFillEl.style.backgroundColor = color;
+            
+            // Update red flags list
+            redFlagsListEl.innerHTML = '';
+            redFlags.forEach(flag => {
+                const li = document.createElement('li');
+                li.textContent = flag;
+                redFlagsListEl.appendChild(li);
+            });
+            
+            // Update recommendations
+            recommendationsListEl.innerHTML = '';
+            recommendations.forEach(rec => {
+                const div = document.createElement('div');
+                div.className = 'recommendation-item';
+                div.innerHTML = `<i class="fas fa-check-circle"></i> ${rec}`;
+                recommendationsListEl.appendChild(div);
+            });
+            
+            // Add general recommendations
+            const generalRecs = [
+                'Report suspicious profiles to the platform',
+                'Block the account immediately',
+                'Warn mutual connections about the fake profile',
+                'Never share personal or financial information'
+            ];
+            
+            generalRecs.forEach(rec => {
+                const div = document.createElement('div');
+                div.className = 'recommendation-item';
+                div.innerHTML = `<i class="fas fa-shield-alt"></i> ${rec}`;
+                recommendationsListEl.appendChild(div);
+            });
+            
+            // Show results
+            resultContainer.style.display = 'block';
+        });
+    }
+    
+    // Response checklist
+    const responseItems = document.querySelectorAll('.response-item input[type="checkbox"]');
+    responseItems.forEach(item => {
+        item.addEventListener('change', function() {
+            if (this.checked) {
+                this.parentElement.style.opacity = '0.6';
+                this.parentElement.style.textDecoration = 'line-through';
+            } else {
+                this.parentElement.style.opacity = '1';
+                this.parentElement.style.textDecoration = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

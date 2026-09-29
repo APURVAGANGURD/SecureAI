@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAI - {% block title %}AI-Powered Cybersecurity Toolkit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <i class="fas fa-shield-alt"></i> SecureAI
+            </a>
+            <div class="nav-menu">
+                <a href="{{ url_for('index') }}" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropbtn"><i class="fas fa-tools"></i> Tools</button>
+                    <div class="nav-dropdown-content">
+                        <a href="{{ url_for('password_analyzer') }}"><i class="fas fa-key"></i> Password Analyzer</a>
+                        <a href="{{ url_for('phishing_analyzer') }}"><i class="fas fa-fish"></i> Phishing Detector</a>
+                        <a href="{{ url_for('website_safety') }}"><i class="fas fa-globe"></i> Website Safety</a>
+                        <a href="{{ url_for('fake_profile') }}"><i class="fas fa-user-secret"></i> Fake Profile Checker</a>
+                        <a href="{{ url_for('app_permissions') }}"><i class="fas fa-mobile-alt"></i> App Permissions</a>
+                        <a href="{{ url_for('risk_score') }}"><i class="fas fa-chart-line"></i> Risk Score</a>
+                        <a href="{{ url_for('ai_assistant') }}"><i class="fas fa-robot"></i> AI Assistant</a>
+                    </div>
+                </div>
+                <a href="{{ url_for('two_factor_auth') }}" class="nav-link"><i class="fas fa-user-lock"></i> 2FA Guide</a>
+                <a href="{{ url_for('public_wifi') }}" class="nav-link"><i class="fas fa-wifi"></i> Wi-Fi Safety</a>
+                <a href="{{ url_for('data_backup') }}" class="nav-link"><i class="fas fa-hdd"></i> Data Backup</a>
+                <a href="{{ url_for('dashboard') }}" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-shield-alt"></i> SecureAI</h3>
+                <p>AI-Powered Cybersecurity Awareness Toolkit</p>
+                <p>Educational & Defensive Security Only</p>
+            </div>
+            <div class="footer-section">
+                <h4>Important Notice</h4>
+                <p>This tool is for educational purposes only. We do not store sensitive data, perform hacking, or access real systems.</p>
+                <p>Always consult with security professionals for critical security needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Modules</h4>
+                <a href="{{ url_for('password_analyzer') }}">Password Security</a>
+                <a href="{{ url_for('phishing_analyzer') }}">Phishing Detection</a>
+                <a href="{{ url_for('website_safety') }}">Website Safety</a>
+                <a href="{{ url_for('fake_profile') }}">Fake Profile Checker</a>
+                <a href="{{ url_for('ai_assistant') }}">AI Assistant</a>
+                <a href="{{ url_for('two_factor_auth') }}">2FA Guide</a>
+                <a href="{{ url_for('public_wifi') }}">Wi-Fi Safety</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SecureAI - AI Cybersecurity Toolkit | Educational Use Only</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

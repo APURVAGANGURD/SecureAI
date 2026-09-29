@@ -1,0 +1,464 @@
+{% extends "base.html" %}
+
+{% block title %}Phishing & Scam Analyzer{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-fish"></i> AI Phishing & Scam Analyzer</h1>
+        <p>Analyze emails, messages, and websites for phishing attempts and social engineering</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="analysis-section">
+            <h2><i class="fas fa-search"></i> Analyze Suspicious Message</h2>
+            <p class="note"><i class="fas fa-info-circle"></i> This tool analyzes text for common phishing indicators. Never enter real passwords or sensitive information.</p>
+            
+            <form method="POST" class="analysis-form">
+                <div class="form-group">
+                    <label for="sender"><i class="fas fa-envelope"></i> Sender (Optional):</label>
+                    <input type="text" id="sender" name="sender" 
+                           placeholder="sender@example.com" 
+                           class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message"><i class="fas fa-comment-alt"></i> Message Text:</label>
+                    <textarea id="message" name="message" 
+                              rows="8"
+                              placeholder="Paste the suspicious message here..."
+                              class="form-textarea"
+                              required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Analyze for Phishing
+                </button>
+                <button type="button" id="loadExample" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i> Load Example
+                </button>
+            </form>
+            
+            {% if result %}
+            <div class="result-card" id="resultCard">
+                <div class="result-header">
+                    <h3><i class="fas fa-shield-alt"></i> Phishing Analysis Result</h3>
+                    <span class="result-badge" id="resultBadge">
+                        {{ result.risk_level }} Risk (Score: {{ result.risk_score }}/100)
+                    </span>
+                </div>
+                
+                <div class="result-details">
+                    {% if result.indicators %}
+                    <div class="feedback-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Detected Indicators:</h4>
+                        <ul>
+                            {% for indicator in result.indicators %}
+                            <li>{{ indicator }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="suggestions-section">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations:</h4>
+                        <ul>
+                            {% for recommendation in result.recommendations %}
+                            <li>{{ recommendation }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="guidance-section">
+            <h2><i class="fas fa-graduation-cap"></i> Phishing Prevention Guide</h2>
+            
+            <div class="guidance-cards">
+                <div class="guidance-card">
+                    <div class="guidance-icon" style="background-color: #3498db;">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Red Flags to Watch For</h3>
+                    <ul>
+                        <li>Urgent or threatening language</li>
+                        <li>Unexpected attachments or links</li>
+                        <li>Generic greetings ("Dear Customer")</li>
+                        <li>Suspicious sender addresses</li>
+                        <li>Requests for personal information</li>
+                        <li>Poor grammar and spelling errors</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon" style="background-color: #2ecc71;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Safe Practices</h3>
+                    <ul>
+                        <li>Verify sender through official channels</li>
+                        <li>Hover over links to see actual URL</li>
+                        <li>Never share passwords via email</li>
+                        <li>Use bookmarks for important sites</li>
+                        <li>Enable spam filters</li>
+                        <li>Keep software updated</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="phishing-types">
+                <h3><i class="fas fa-project-diagram"></i> Common Phishing Types</h3>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h4>Email Phishing</h4>
+                        <p>Mass emails pretending to be from legitimate companies</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Spear Phishing</h4>
+                        <p>Targeted attacks using personalized information</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Smishing</h4>
+                        <p>Phishing via SMS/text messages</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Vishing</h4>
+                        <p>Voice call phishing attacks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.tool-container {
+    padding: 2rem;
+}
+
+.tool-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.tool-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.analysis-section {
+    margin-bottom: 3rem;
+}
+
+.note {
+    background-color: #e3f2fd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: #1976d2;
+}
+
+.analysis-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #2196f3;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1976d2;
+}
+
+.btn-secondary {
+    background-color: #9c27b0;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7b1fa2;
+}
+
+.result-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid #ccc;
+    margin-top: 2rem;
+    overflow: hidden;
+}
+
+.result-header {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.result-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background-color: #ccc;
+}
+
+.result-details {
+    padding: 1.5rem;
+}
+
+.feedback-section, .suggestions-section {
+    margin-bottom: 2rem;
+}
+
+.feedback-section ul, .suggestions-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.feedback-section li, .suggestions-section li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.feedback-section li:before {
+    content: "⚠️";
+    position: absolute;
+    left: 0;
+}
+
+.suggestions-section li:before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+}
+
+.guidance-section {
+    margin-top: 3rem;
+}
+
+.guidance-section h2 {
+    color: #2196f3;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.guidance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.guidance-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    text-align: center;
+}
+
+.guidance-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.guidance-card ul {
+    list-style: none;
+    padding-left: 0;
+    text-align: left;
+}
+
+.guidance-card li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.guidance-card li:before {
+    content: "•";
+    color: inherit;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.guidance-card:nth-child(1) li:before {
+    color: #3498db;
+}
+
+.guidance-card:nth-child(2) li:before {
+    color: #2ecc71;
+}
+
+.phishing-types h3 {
+    color: #2196f3;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.type-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #2196f3;
+}
+
+.type-card h4 {
+    margin-bottom: 0.5rem;
+    color: #2196f3;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load example phishing message
+    const loadExampleBtn = document.getElementById('loadExample');
+    const messageTextarea = document.getElementById('message');
+    const senderInput = document.getElementById('sender');
+    
+    if (loadExampleBtn && messageTextarea) {
+        loadExampleBtn.addEventListener('click', function() {
+            const exampleMessage = `URGENT: Your account has been suspended due to suspicious activity!
+
+Dear Customer,
+
+We detected unusual login attempts on your account. For your security, we've temporarily suspended your account.
+
+To restore access immediately, CLICK HERE to verify your identity:
+http://secure-login-verify.xyz/confirm
+
+This is required within 24 hours or your account will be permanently disabled.
+
+Sincerely,
+Security Team
+support@yourbank-secure.com`;
+
+            messageTextarea.value = exampleMessage;
+            senderInput.value = 'security@yourbank-secure.xyz';
+        });
+    }
+    
+    // Update result card colors if result exists
+    const resultCard = document.getElementById('resultCard');
+    const resultBadge = document.getElementById('resultBadge');
+    
+    if (resultCard && resultBadge) {
+        const badgeText = resultBadge.textContent.trim();
+        const riskMatch = badgeText.match(/^(High|Medium|Low)/i);
+        
+        if (riskMatch) {
+            const risk = riskMatch[0].toLowerCase();
+            let borderColor, badgeColor;
+            
+            if (risk.includes('high')) {
+                borderColor = '#e74c3c';
+                badgeColor = '#e74c3c';
+            } else if (risk.includes('medium')) {
+                borderColor = '#f39c12';
+                badgeColor = '#f39c12';
+            } else if (risk.includes('low')) {
+                borderColor = '#27ae60';
+                badgeColor = '#27ae60';
+            } else {
+                borderColor = '#ccc';
+                badgeColor = '#ccc';
+            }
+            
+            resultCard.style.borderLeftColor = borderColor;
+            resultBadge.style.backgroundColor = badgeColor;
+        }
+    }
+});
+</script>
+{% endblock %}

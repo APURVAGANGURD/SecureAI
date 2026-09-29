@@ -1,0 +1,1456 @@
+{% extends "base.html" %}
+
+{% block title %}Security Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Security Dashboard</h1>
+        <p>Overview of your cybersecurity status and progress</p>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-grid">
+            <div class="dashboard-card main-score">
+                <div class="card-header">
+                    <h3><i class="fas fa-shield-alt"></i> Overall Security Score</h3>
+                    <div class="last-updated">Last assessed: Today</div>
+                </div>
+                <div class="card-content">
+                    <div class="score-display">
+                        <div class="score-circle-large" id="scoreCircle">
+                            <span class="score-value">{{ risk_score if risk_score != 'Not calculated yet' else '0' }}</span>
+                            <span class="score-label">/100</span>
+                        </div>
+                        <div class="score-details">
+                            <h4>Your Security Status</h4>
+                            <p>Based on your latest risk assessment</p>
+                            <div class="score-breakdown">
+                                <div class="breakdown-item">
+                                    <span>Password Strength</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%;"></div>
+                                    </div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Privacy Protection</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Threat Awareness</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-actions">
+                        <a href="{{ url_for('risk_score') }}" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Reassess Score
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}" class="btn btn-secondary">
+                            <i class="fas fa-robot"></i> Get Recommendations
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card quick-actions">
+                <div class="card-header">
+                    <h3><i class="fas fa-bolt"></i> Quick Security Actions</h3>
+                </div>
+                <div class="card-content">
+                    <div class="actions-grid">
+                        <a href="{{ url_for('password_analyzer') }}" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Check Passwords</h4>
+                                <p>Analyze and improve password strength</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('phishing_analyzer') }}" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-fish"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Test Phishing Detection</h4>
+                                <p>Practice identifying suspicious messages</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('two_factor_auth') }}" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-user-lock"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Enable 2FA</h4>
+                                <p>Add extra security to accounts</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('app_permissions') }}" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Review App Permissions</h4>
+                                <p>Check and manage app access</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card progress-tracker">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line"></i> Security Progress</h3>
+                    <div class="time-filter">
+                        <select>
+                            <option>Last 30 Days</option>
+                            <option>Last 90 Days</option>
+                            <option>Last Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="progress-chart">
+                        <div class="chart-placeholder">
+                            <div class="chart-bars">
+                                <div class="chart-bar" style="height: 60%;" data-month="Jan"></div>
+                                <div class="chart-bar" style="height: 65%;" data-month="Feb"></div>
+                                <div class="chart-bar" style="height: 70%;" data-month="Mar"></div>
+                                <div class="chart-bar" style="height: 75%;" data-month="Apr"></div>
+                                <div class="chart-bar" style="height: 80%;" data-month="May"></div>
+                                <div class="chart-bar" style="height: 85%;" data-month="Jun"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                                <span>Jun</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat">
+                            <div class="stat-value">+25%</div>
+                            <div class="stat-label">Score Improvement</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6</div>
+                            <div class="stat-label">Tools Used</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Security Actions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card threats-overview">
+                <div class="card-header">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Current Threat Level</h3>
+                    <div class="threat-status medium">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Medium Alert</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <div class="threat-icon high">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>Phishing Campaigns Active</h4>
+                                <p>Increased fake invoice and shipping scams</p>
+                            </div>
+                        </div>
+                        
+                        <div class="threat-item">
+                            <div class="threat-icon medium">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>Public Wi-Fi Risks</h4>
+                                <p>Travel season increases exposure risks</p>
+                            </div>
+                        </div>
+                        
+                        <div class="threat-item">
+                            <div class="threat-icon low">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>E-commerce Scams</h4>
+                                <p>Fake retail sites during sales events</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="threat-actions">
+                        <a href="{{ url_for('phishing_analyzer') }}" class="btn btn-small">Learn Protection</a>
+                        <a href="{{ url_for('ai_assistant') }}" class="btn btn-small">Ask About Threats</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card learning-path">
+                <div class="card-header">
+                    <h3><i class="fas fa-graduation-cap"></i> Recommended Learning Path</h3>
+                    <div class="progress-indicator">2/5 Completed</div>
+                </div>
+                <div class="card-content">
+                    <div class="learning-steps">
+                        <div class="step completed">
+                            <div class="step-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Password Security Basics</h4>
+                                <p>Learn to create and manage strong passwords</p>
+                            </div>
+                            <a href="{{ url_for('password_analyzer') }}" class="step-action">Review</a>
+                        </div>
+                        
+                        <div class="step completed">
+                            <div class="step-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Phishing Detection</h4>
+                                <p>Identify and avoid email and message scams</p>
+                            </div>
+                            <a href="{{ url_for('phishing_analyzer') }}" class="step-action">Review</a>
+                        </div>
+                        
+                        <div class="step current">
+                            <div class="step-check">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Two-Factor Authentication</h4>
+                                <p>Add extra security to your accounts</p>
+                            </div>
+                            <a href="{{ url_for('two_factor_auth') }}" class="step-action">Start</a>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-check">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Data Backup Planning</h4>
+                                <p>Protect against data loss and ransomware</p>
+                            </div>
+                            <a href="{{ url_for('data_backup') }}" class="step-action">Learn</a>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-check">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Privacy Protection</h4>
+                                <p>Manage your digital footprint and data</p>
+                            </div>
+                            <a href="{{ url_for('digital_footprint') }}" class="step-action">Learn</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card security-checklist">
+                <div class="card-header">
+                    <h3><i class="fas fa-clipboard-check"></i> Monthly Security Checklist</h3>
+                    <div class="completion">4/8 Completed</div>
+                </div>
+                <div class="card-content">
+                    <div class="checklist-items">
+                        <div class="checklist-item completed">
+                            <input type="checkbox" id="check1" checked>
+                            <label for="check1">Update all software and apps</label>
+                        </div>
+                        
+                        <div class="checklist-item completed">
+                            <input type="checkbox" id="check2" checked>
+                            <label for="check2">Review password manager</label>
+                        </div>
+                        
+                        <div class="checklist-item completed">
+                            <input type="checkbox" id="check3" checked>
+                            <label for="check3">Check 2FA on important accounts</label>
+                        </div>
+                        
+                        <div class="checklist-item completed">
+                            <input type="checkbox" id="check4" checked>
+                            <label for="check4">Run antivirus scan</label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check5">
+                            <label for="check5">Review social media privacy settings</label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check6">
+                            <label for="check6">Test data backups</label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check7">
+                            <label for="check7">Audit app permissions</label>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check8">
+                            <label for="check8">Review financial accounts for fraud</label>
+                        </div>
+                    </div>
+                    <div class="checklist-actions">
+                        <button id="resetChecklist" class="btn btn-small">Reset Checklist</button>
+                        <button id="saveChecklist" class="btn btn-small btn-primary">Save Progress</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card resources">
+                <div class="card-header">
+                    <h3><i class="fas fa-life-ring"></i> Help & Resources</h3>
+                </div>
+                <div class="card-content">
+                    <div class="resources-list">
+                        <a href="{{ url_for('ai_assistant') }}" class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h4>AI Assistant</h4>
+                                <p>Get personalized security advice</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('website_safety') }}" class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h4>Website Safety Guide</h4>
+                                <p>Learn to identify safe websites</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('fake_profile') }}" class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h4>Fake Profile Detection</h4>
+                                <p>Spot and avoid impersonation scams</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('digital_footprint') }}" class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-shoe-prints"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h4>Digital Footprint</h4>
+                                <p>Manage your online presence</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: Additional Security Tools Section -->
+            <div class="dashboard-card security-tools">
+                <div class="card-header">
+                    <h3><i class="fas fa-tools"></i> Security Tools</h3>
+                </div>
+                <div class="card-content">
+                    <div class="tools-grid">
+                        <a href="{{ url_for('fake_profile') }}" class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h4>Fake Profile Detector</h4>
+                                <p>Identify fake social media profiles</p>
+                            </div>
+                            <div class="tool-badge">New</div>
+                        </a>
+                        
+                        <a href="{{ url_for('digital_footprint') }}" class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fas fa-shoe-prints"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h4>Digital Footprint</h4>
+                                <p>Track and manage online presence</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('public_wifi') }}" class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h4>Wi-Fi Safety</h4>
+                                <p>Stay safe on public networks</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url_for('data_backup') }}" class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fas fa-hdd"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h4>Backup Planner</h4>
+                                <p>Secure your important data</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-achievements">
+            <h2><i class="fas fa-trophy"></i> Security Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>Password Master</h4>
+                        <p>Created and analyzed strong passwords</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>Phishing Detector</h4>
+                        <p>Successfully identified phishing attempts</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="achievement locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>2FA Champion</h4>
+                        <p>Enable 2FA on 5+ accounts</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                
+                <div class="achievement locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-hdd"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>Backup Expert</h4>
+                        <p>Set up complete backup system</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="achievement locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>Profile Detective</h4>
+                        <p>Detect and report fake profiles</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="achievement locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <div class="achievement-content">
+                        <h4>Footprint Manager</h4>
+                        <p>Successfully reduce digital footprint</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-goals">
+            <h2><i class="fas fa-bullseye"></i> Security Goals</h2>
+            <div class="goals-container">
+                <div class="goal-card">
+                    <div class="goal-header">
+                        <h3>Short-term (30 days)</h3>
+                        <div class="goal-progress">50%</div>
+                    </div>
+                    <div class="goal-content">
+                        <ul>
+                            <li class="completed">Set up password manager</li>
+                            <li class="completed">Enable 2FA on email</li>
+                            <li>Review all app permissions</li>
+                            <li>Complete phishing training</li>
+                            <li>Check fake profile detection</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <div class="goal-header">
+                        <h3>Medium-term (90 days)</h3>
+                        <div class="goal-progress">25%</div>
+                    </div>
+                    <div class="goal-content">
+                        <ul>
+                            <li class="completed">Implement password manager</li>
+                            <li>Enable 2FA on all financial accounts</li>
+                            <li>Set up automatic backups</li>
+                            <li>Complete digital footprint audit</li>
+                            <li>Learn fake profile identification</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="goal-card">
+                    <div class="goal-header">
+                        <h3>Long-term (1 year)</h3>
+                        <div class="goal-progress">10%</div>
+                    </div>
+                    <div class="goal-content">
+                        <ul>
+                            <li>Maintain 90+ security score</li>
+                            <li>Regular security audits</li>
+                            <li>Help 3 others improve security</li>
+                            <li>Stay current on threats</li>
+                            <li>Master all security tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: AI Assistant Quick Access -->
+        <div class="dashboard-ai-assistant">
+            <div class="ai-container">
+                <div class="ai-header">
+                    <h2><i class="fas fa-robot"></i> AI Assistant - Quick Help</h2>
+                    <p>Get instant answers to your security questions</p>
+                </div>
+                <div class="ai-quick-questions">
+                    <h3>Try asking:</h3>
+                    <div class="quick-questions-grid">
+                        <a href="{{ url_for('ai_assistant') }}?q=password" class="question-btn">
+                            <i class="fas fa-key"></i>
+                            <span>How to create strong password?</span>
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}?q=phishing" class="question-btn">
+                            <i class="fas fa-fish"></i>
+                            <span>How to spot phishing?</span>
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}?q=wifi" class="question-btn">
+                            <i class="fas fa-wifi"></i>
+                            <span>Is public Wi-Fi safe?</span>
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}?q=profile" class="question-btn">
+                            <i class="fas fa-user-secret"></i>
+                            <span>How to detect fake profiles?</span>
+                        </a>
+                    </div>
+                    <div class="ai-actions">
+                        <a href="{{ url_for('ai_assistant') }}" class="btn btn-primary">
+                            <i class="fas fa-comments"></i> Open Full AI Assistant
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}" class="btn btn-secondary">
+                            <i class="fas fa-question-circle"></i> Ask Your Question
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.dashboard-container {
+    padding: 2rem;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.last-updated {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.main-score .card-content {
+    padding: 2rem;
+}
+
+.score-display {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.score-circle-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 8px solid #ccc; /* Default color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.score-details {
+    flex: 1;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+}
+
+.score-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+.action-item:hover {
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.action-content h4 {
+    margin-bottom: 0.25rem;
+}
+
+.action-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+/* New Tools Section */
+.security-tools .card-content {
+    padding: 1.5rem;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+    position: relative;
+}
+
+.tool-item:hover {
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.tool-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    flex-shrink: 0;
+}
+
+.tool-content {
+    flex: 1;
+}
+
+.tool-content h4 {
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.tool-content p {
+    font-size: 0.8rem;
+    color: var(--gray-color);
+}
+
+.tool-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* New AI Assistant Section */
+.dashboard-ai-assistant {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--border-radius);
+    color: white;
+}
+
+.ai-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.ai-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.ai-header p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.ai-quick-questions {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+}
+
+.ai-quick-questions h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.quick-questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.question-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.question-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+}
+
+.question-btn i {
+    font-size: 2rem;
+}
+
+.question-btn span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.ai-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ai-actions .btn {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.ai-actions .btn-primary {
+    background: white;
+    color: #667eea;
+}
+
+.ai-actions .btn-primary:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.ai-actions .btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.ai-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Progress chart and other existing styles remain the same */
+.progress-chart {
+    margin-bottom: 1.5rem;
+}
+
+.chart-placeholder {
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex: 1;
+    height: 100%;
+}
+
+.chart-bar {
+    flex: 1;
+    background-color: var(--secondary-color);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    transition: height 0.3s ease;
+}
+
+.chart-bar:hover {
+    opacity: 0.8;
+}
+
+.chart-bar:after {
+    content: attr(data-month);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    margin-top: 0.25rem;
+}
+
+.threat-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.threat-status.medium {
+    background-color: #fef9f3;
+    color: #f39c12;
+}
+
+.threat-list {
+    margin-bottom: 1.5rem;
+}
+
+.threat-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.75rem;
+}
+
+.threat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.threat-icon.high {
+    background-color: #fdf2f2;
+    color: #e74c3c;
+}
+
+.threat-icon.medium {
+    background-color: #fef9f3;
+    color: #f39c12;
+}
+
+.threat-icon.low {
+    background-color: #f3f9fe;
+    color: #3498db;
+}
+
+.threat-content h4 {
+    margin-bottom: 0.25rem;
+}
+
+.threat-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+.threat-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.learning-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.step.completed {
+    opacity: 0.7;
+}
+
+.step.current {
+    background: #e3f2fd;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.step-check {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step.completed .step-check {
+    color: #27ae60;
+}
+
+.step.current .step-check {
+    color: var(--secondary-color);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin-bottom: 0.25rem;
+}
+
+.step-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+.step-action {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.step-action:hover {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.checklist-items {
+    margin-bottom: 1.5rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.checklist-item:last-child {
+    border-bottom: none;
+}
+
+.checklist-item.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.checklist-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--secondary-color);
+}
+
+.checklist-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.resources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.resource-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+.resource-item:hover {
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resource-icon {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.resource-content h4 {
+    margin-bottom: 0.25rem;
+}
+
+.resource-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+.dashboard-achievements {
+    margin: 3rem 0;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.achievement {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.achievement.locked {
+    opacity: 0.5;
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+}
+
+.achievement-content {
+    flex: 1;
+}
+
+.achievement-content h4 {
+    margin-bottom: 0.25rem;
+}
+
+.achievement-content p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+}
+
+.achievement-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement.unlocked .achievement-badge {
+    background-color: #27ae60;
+    color: white;
+}
+
+.achievement.locked .achievement-badge {
+    background-color: #e9ecef;
+    color: var(--gray-color);
+}
+
+.dashboard-goals {
+    margin: 3rem 0;
+}
+
+.goals-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.goal-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.goal-progress {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.goal-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.goal-content li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.goal-content li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--gray-color);
+}
+
+.goal-content li.completed {
+    color: #27ae60;
+    text-decoration: line-through;
+}
+
+.goal-content li.completed:before {
+    content: "✓";
+    color: #27ae60;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-grid,
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-questions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .score-display {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .score-actions,
+    .threat-actions,
+    .ai-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update score circle color based on risk score
+    function updateScoreCircle() {
+        const scoreCircle = document.getElementById('scoreCircle');
+        if (!scoreCircle) return;
+        
+        const scoreValue = document.querySelector('.score-value');
+        if (!scoreValue) return;
+        
+        let score = scoreValue.textContent.trim();
+        // Handle "Not calculated yet" or empty score
+        if (score === 'Not calculated yet' || isNaN(score)) {
+            score = 0;
+        } else {
+            score = parseInt(score);
+        }
+        
+        let borderColor = '#ccc'; // Default
+        
+        if (!isNaN(score)) {
+            if (score >= 80) {
+                borderColor = '#27ae60'; // Green for good
+            } else if (score >= 60) {
+                borderColor = '#f39c12'; // Orange for medium
+            } else {
+                borderColor = '#e74c3c'; // Red for poor
+            }
+        }
+        
+        scoreCircle.style.borderColor = borderColor;
+    }
+    
+    // Checklist functionality
+    const checklistItems = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const resetChecklistBtn = document.getElementById('resetChecklist');
+    const saveChecklistBtn = document.getElementById('saveChecklist');
+    
+    checklistItems.forEach(item => {
+        item.addEventListener('change', function() {
+            const listItem = this.closest('.checklist-item');
+            if (this.checked) {
+                listItem.classList.add('completed');
+            } else {
+                listItem.classList.remove('completed');
+            }
+            updateChecklistProgress();
+        });
+    });
+    
+    function updateChecklistProgress() {
+        const total = checklistItems.length;
+        const completed = Array.from(checklistItems).filter(item => item.checked).length;
+        const progressElement = document.querySelector('.completion');
+        if (progressElement) {
+            progressElement.textContent = `${completed}/${total} Completed`;
+        }
+    }
+    
+    if (resetChecklistBtn) {
+        resetChecklistBtn.addEventListener('click', function() {
+            if (confirm('Reset all checklist items?')) {
+                checklistItems.forEach(item => {
+                    item.checked = false;
+                    const listItem = item.closest('.checklist-item');
+                    listItem.classList.remove('completed');
+                });
+                updateChecklistProgress();
+            }
+        });
+    }
+    
+    if (saveChecklistBtn) {
+        saveChecklistBtn.addEventListener('click', function() {
+            // In a real app, this would save to server
+            alert('Checklist progress saved!');
+            // For demo, simulate save
+            this.textContent = 'Saved!';
+            this.disabled = true;
+            this.style.backgroundColor = '#27ae60';
+            this.style.borderColor = '#27ae60';
+            
+            setTimeout(() => {
+                this.textContent = 'Save Progress';
+                this.disabled = false;
+                this.style.backgroundColor = '';
+                this.style.borderColor = '';
+            }, 2000);
+        });
+    }
+    
+    // Chart bar hover effect
+    const chartBars = document.querySelectorAll('.chart-bar');
+    chartBars.forEach(bar => {
+        bar.addEventListener('mouseenter', function() {
+            const month = this.getAttribute('data-month');
+            // In a real app, you might show more detailed info
+        });
+    });
+    
+    // Update initial states
+    updateScoreCircle();
+    updateChecklistProgress();
+});
+</script>
+{% endblock %}

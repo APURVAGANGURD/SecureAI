@@ -1,0 +1,816 @@
+{% extends "base.html" %}
+
+{% block title %}App Permission Risk Analyzer{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-mobile-alt"></i> App Permission Risk Analyzer</h1>
+        <p>Understand app permissions and identify potential security risks</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="analysis-section">
+            <h2><i class="fas fa-search"></i> Analyze App Permissions</h2>
+            <p class="note"><i class="fas fa-info-circle"></i> Select permissions that an app requests to analyze potential risks and privacy concerns.</p>
+            
+            <form method="POST" class="analysis-form">
+                <div class="form-group">
+                    <label for="app_name"><i class="fas fa-robot"></i> App Name (Optional):</label>
+                    <input type="text" id="app_name" name="app_name" 
+                           placeholder="e.g., Flashlight App, Social Media App"
+                           class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-list-check"></i> Select App Permissions:</label>
+                    <p class="subtext">Check all permissions that the app requests during installation or in settings.</p>
+                    
+                    <div class="permissions-grid">
+                        <div class="permission-category">
+                            <h4><i class="fas fa-user-secret"></i> Dangerous Permissions</h4>
+                            {% for perm in [
+                                ('android.permission.READ_SMS', 'Read SMS Messages'),
+                                ('android.permission.SEND_SMS', 'Send SMS Messages'),
+                                ('android.permission.RECEIVE_SMS', 'Receive SMS Messages'),
+                                ('android.permission.READ_CONTACTS', 'Read Contacts'),
+                                ('android.permission.WRITE_CONTACTS', 'Write Contacts'),
+                                ('android.permission.ACCESS_FINE_LOCATION', 'Access Fine Location'),
+                                ('android.permission.ACCESS_COARSE_LOCATION', 'Access Coarse Location'),
+                                ('android.permission.RECORD_AUDIO', 'Record Audio'),
+                                ('android.permission.CAMERA', 'Take Pictures and Video'),
+                                ('android.permission.READ_CALL_LOG', 'Read Call Log'),
+                                ('android.permission.WRITE_CALL_LOG', 'Write Call Log')
+                            ] %}
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="{{ perm[0] }}" name="permissions" value="{{ perm[0] }}">
+                                <label for="{{ perm[0] }}">{{ perm[1] }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="permission-category">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Other Permissions</h4>
+                            {% for perm in [
+                                ('android.permission.INTERNET', 'Full Network Access'),
+                                ('android.permission.ACCESS_WIFI_STATE', 'View Wi-Fi Connections'),
+                                ('android.permission.ACCESS_NETWORK_STATE', 'View Network Connections'),
+                                ('android.permission.WRITE_EXTERNAL_STORAGE', 'Modify/Delete SD Card Contents'),
+                                ('android.permission.READ_EXTERNAL_STORAGE', 'Read SD Card Contents'),
+                                ('android.permission.GET_ACCOUNTS', 'Find Accounts on Device'),
+                                ('android.permission.READ_PHONE_STATE', 'Read Phone Status and Identity'),
+                                ('android.permission.PROCESS_OUTGOING_CALLS', 'Intercept Outgoing Calls'),
+                                ('android.permission.BODY_SENSORS', 'Body Sensors'),
+                                ('android.permission.USE_FINGERPRINT', 'Fingerprint Hardware'),
+                                ('android.permission.BLUETOOTH', 'Bluetooth Access')
+                            ] %}
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="{{ perm[0] }}" name="permissions" value="{{ perm[0] }}">
+                                <label for="{{ perm[0] }}">{{ perm[1] }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Analyze Permissions
+                </button>
+                <button type="button" id="selectAll" class="btn btn-secondary">
+                    <i class="fas fa-check-square"></i> Select All Dangerous
+                </button>
+                <button type="button" id="clearAll" class="btn btn-secondary">
+                    <i class="fas fa-times-circle"></i> Clear All
+                </button>
+            </form>
+            
+            {% if result %}
+            <div class="result-card" id="resultCard">
+                <div class="result-header">
+                    <h3><i class="fas fa-chart-bar"></i> Permission Analysis Result</h3>
+                    <span class="result-badge" id="resultBadge">
+                        {{ result.risk_level }} Risk (Score: {{ result.risk_score }}/100)
+                    </span>
+                </div>
+                
+                <div class="result-details">
+                    {% if result.dangerous_permissions %}
+                    <div class="dangerous-permissions">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Dangerous Permissions Found:</h4>
+                        <div class="permissions-list">
+                            {% for perm in result.dangerous_permissions %}
+                            <span class="permission-tag danger">{{ perm.split('.')[-1].replace('_', ' ') }}</span>
+                            {% endfor %}
+                        </div>
+                        <p class="warning">These permissions pose significant security and privacy risks. Consider if the app truly needs them.</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if result.warning_permissions %}
+                    <div class="warning-permissions">
+                        <h4><i class="fas fa-exclamation-circle"></i> Other Permissions:</h4>
+                        <div class="permissions-list">
+                            {% for perm in result.warning_permissions %}
+                            <span class="permission-tag warning">{{ perm.split('.')[-1].replace('_', ' ') }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="recommendations">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations:</h4>
+                        <ul>
+                            {% for recommendation in result.recommendations %}
+                            <li>{{ recommendation }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="education-section">
+            <h2><i class="fas fa-graduation-cap"></i> App Permission Security Guide</h2>
+            
+            <div class="permission-categories">
+                <h3><i class="fas fa-layer-group"></i> Permission Categories</h3>
+                <div class="categories-grid">
+                    <div class="category-card critical">
+                        <div class="category-header">
+                            <i class="fas fa-skull-crossbones"></i>
+                            <h4>Critical</h4>
+                        </div>
+                        <p>Permissions that can directly harm you or steal sensitive data:</p>
+                        <ul>
+                            <li>SMS/MMS access</li>
+                            <li>Call log access</li>
+                            <li>Contact list access</li>
+                            <li>Camera/microphone</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="category-card high">
+                        <div class="category-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>High Risk</h4>
+                        </div>
+                        <p>Permissions that can compromise privacy or security:</p>
+                        <ul>
+                            <li>Location tracking</li>
+                            <li>Storage access</li>
+                            <li>Phone state/identity</li>
+                            <li>Calendar access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="category-card medium">
+                        <div class="category-header">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h4>Medium Risk</h4>
+                        </div>
+                        <p>Permissions that may be necessary but require scrutiny:</p>
+                        <ul>
+                            <li>Internet access</li>
+                            <li>Network state</li>
+                            <li>Wi-Fi connections</li>
+                            <li>Bluetooth</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="category-card low">
+                        <div class="category-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h4>Low Risk</h4>
+                        </div>
+                        <p>Permissions that are generally safe for most apps:</p>
+                        <ul>
+                            <li>Vibration</li>
+                            <li>Wake lock</li>
+                            <li>Set wallpaper</li>
+                            <li>Install shortcuts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="best-practices">
+                <h3><i class="fas fa-check-circle"></i> Best Practices for App Permissions</h3>
+                <div class="practices-grid">
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h4>Question Everything</h4>
+                        <p>Ask "Why does this app need this permission?" If a flashlight app asks for SMS access, that's suspicious.</p>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h4>Use Official Stores</h4>
+                        <p>Download apps only from Google Play Store or Apple App Store. They scan for malware.</p>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h4>Regular Audits</h4>
+                        <p>Periodically review permissions for installed apps in your device settings.</p>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <h4>Read Reviews</h4>
+                        <p>Check user reviews for complaints about suspicious behavior or data collection.</p>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-unlock-alt"></i>
+                        </div>
+                        <h4>Runtime Permissions</h4>
+                        <p>Grant permissions only when needed (like camera only when taking photos).</p>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <h4>Uninstall Unused Apps</h4>
+                        <p>Remove apps you don't use regularly to minimize permission exposure.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="common-apps">
+                <h3><i class="fas fa-mobile"></i> Common Apps & Expected Permissions</h3>
+                <div class="apps-examples">
+                    <div class="app-example">
+                        <h4>Flashlight App</h4>
+                        <p><strong>Expected:</strong> Camera (for flash), Vibration</p>
+                        <p><strong>Suspicious:</strong> Internet, Contacts, SMS, Location</p>
+                    </div>
+                    
+                    <div class="app-example">
+                        <h4>Calculator</h4>
+                        <p><strong>Expected:</strong> None or Storage (for history)</p>
+                        <p><strong>Suspicious:</strong> Internet, Contacts, Phone</p>
+                    </div>
+                    
+                    <div class="app-example">
+                        <h4>Social Media</h4>
+                        <p><strong>Expected:</strong> Camera, Microphone, Storage, Contacts</p>
+                        <p><strong>Suspicious:</strong> SMS, Call Log, Body Sensors</p>
+                    </div>
+                    
+                    <div class="app-example">
+                        <h4>Navigation</h4>
+                        <p><strong>Expected:</strong> Location, Storage, Internet</p>
+                        <p><strong>Suspicious:</strong> SMS, Contacts, Camera</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="android-ios">
+                <h3><i class="fas fa-mobile-alt"></i> Android vs iOS Permission Systems</h3>
+                <div class="comparison">
+                    <div class="platform android">
+                        <h4><i class="fab fa-android"></i> Android</h4>
+                        <ul>
+                            <li><strong>Granular Control:</strong> Can deny individual permissions</li>
+                            <li><strong>Runtime Permissions:</strong> Ask when needed</li>
+                            <li><strong>Background Limits:</strong> Restrictions on background access</li>
+                            <li><strong>Scoped Storage:</strong> Limited file access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="platform ios">
+                        <h4><i class="fab fa-apple"></i> iOS</h4>
+                        <ul>
+                            <li><strong>Privacy Labels:</strong> Clear data collection disclosure</li>
+                            <li><strong>App Tracking Transparency:</strong> Opt-in for tracking</li>
+                            <li><strong>Limited Categories:</strong> Fewer permission types</li>
+                            <li><strong>Sandboxing:</strong> Apps isolated from each other</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="check-permissions">
+                <h3><i class="fas fa-cog"></i> How to Check/Change Permissions</h3>
+                <div class="instructions">
+                    <div class="instruction">
+                        <h4>Android</h4>
+                        <ol>
+                            <li>Go to Settings > Apps & notifications</li>
+                            <li>Select the app</li>
+                            <li>Tap Permissions</li>
+                            <li>Toggle permissions on/off</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="instruction">
+                        <h4>iOS</h4>
+                        <ol>
+                            <li>Go to Settings</li>
+                            <li>Scroll to the app</li>
+                            <li>Tap to view permissions</li>
+                            <li>Toggle permissions on/off</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.tool-container {
+    padding: 2rem;
+}
+
+.tool-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.tool-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.analysis-section {
+    margin-bottom: 3rem;
+}
+
+.note {
+    background-color: #e3f2fd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: #1976d2;
+}
+
+.analysis-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #2196f3;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1976d2;
+}
+
+.btn-secondary {
+    background-color: #9c27b0;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7b1fa2;
+}
+
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.permission-category {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.permission-category h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-item {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #3498db;
+}
+
+.subtext {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.result-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid #ccc;
+    margin-top: 2rem;
+    overflow: hidden;
+}
+
+.result-header {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.result-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background-color: #ccc;
+}
+
+.result-details {
+    padding: 1.5rem;
+}
+
+.permission-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin: 0.25rem;
+    font-weight: 500;
+}
+
+.permission-tag.danger {
+    background-color: #fdf2f2;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+.permission-tag.warning {
+    background-color: #fef9f3;
+    color: #f39c12;
+    border: 1px solid #f39c12;
+}
+
+.permissions-list {
+    margin: 1rem 0;
+}
+
+.warning {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: #856404;
+}
+
+.recommendations ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.recommendations li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.recommendations li:before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+}
+
+.education-section {
+    margin-top: 3rem;
+}
+
+.permission-categories h3,
+.best-practices h3,
+.common-apps h3,
+.android-ios h3,
+.check-permissions h3 {
+    color: #2196f3;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.category-card {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid;
+}
+
+.category-card.critical {
+    border-color: #e74c3c;
+    background-color: #fdf2f2;
+}
+
+.category-card.high {
+    border-color: #f39c12;
+    background-color: #fef9f3;
+}
+
+.category-card.medium {
+    border-color: #3498db;
+    background-color: #f3f9fe;
+}
+
+.category-card.low {
+    border-color: #27ae60;
+    background-color: #f3faf6;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.category-header i {
+    font-size: 1.5rem;
+}
+
+.category-card ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-top: 1rem;
+}
+
+.category-card li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.category-card li:before {
+    content: "•";
+    color: inherit;
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+
+.practices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.practice-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.practice-icon {
+    font-size: 2rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+
+.apps-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.app-example {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #3498db;
+}
+
+.app-example h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.app-example p {
+    margin-bottom: 0.5rem;
+}
+
+.comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.platform {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.platform h4 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.platform.android h4 {
+    color: #3DDC84;
+}
+
+.platform.ios h4 {
+    color: #000000;
+}
+
+.platform ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.platform li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.platform li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.instructions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.instruction {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instruction h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.instruction ol {
+    padding-left: 1.5rem;
+}
+
+.instruction li {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllBtn = document.getElementById('selectAll');
+    const clearAllBtn = document.getElementById('clearAll');
+    const checkboxes = document.querySelectorAll('input[name="permissions"]');
+    
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener('click', function() {
+            checkboxes.forEach(checkbox => {
+                if (checkbox.value.includes('READ_SMS') || 
+                    checkbox.value.includes('SEND_SMS') ||
+                    checkbox.value.includes('RECEIVE_SMS') ||
+                    checkbox.value.includes('READ_CONTACTS') ||
+                    checkbox.value.includes('ACCESS_FINE_LOCATION') ||
+                    checkbox.value.includes('RECORD_AUDIO') ||
+                    checkbox.value.includes('CAMERA') ||
+                    checkbox.value.includes('READ_CALL_LOG')) {
+                    checkbox.checked = true;
+                }
+            });
+        });
+    }
+    
+    if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', function() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+    }
+    
+    // Update result card colors if result exists
+    const resultCard = document.getElementById('resultCard');
+    const resultBadge = document.getElementById('resultBadge');
+    
+    if (resultCard && resultBadge) {
+        const riskLevel = resultBadge.textContent.trim().split(' ')[0]; // Get "High", "Medium", or "Low"
+        
+        let borderColor, badgeColor;
+        
+        switch(riskLevel) {
+            case 'High':
+                borderColor = '#e74c3c';
+                badgeColor = '#e74c3c';
+                break;
+            case 'Medium':
+                borderColor = '#f39c12';
+                badgeColor = '#f39c12';
+                break;
+            case 'Low':
+                borderColor = '#27ae60';
+                badgeColor = '#27ae60';
+                break;
+            default:
+                borderColor = '#ccc';
+                badgeColor = '#ccc';
+        }
+        
+        resultCard.style.borderLeftColor = borderColor;
+        resultBadge.style.backgroundColor = badgeColor;
+    }
+});
+</script>
+{% endblock %}

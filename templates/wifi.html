@@ -1,0 +1,772 @@
+{% extends "base.html" %}
+
+{% block title %}Public Wi-Fi Risk Advisor{% endblock %}
+
+{% block content %}
+<div class="tool-container">
+    <div class="tool-header">
+        <h1><i class="fas fa-wifi"></i> Public Wi-Fi Risk Advisor</h1>
+        <p>Learn about public Wi-Fi risks and how to protect yourself on untrusted networks</p>
+    </div>
+    
+    <div class="tool-content">
+        <div class="risk-assessment">
+            <h2><i class="fas fa-exclamation-triangle"></i> Public Wi-Fi Risks</h2>
+            
+            <div class="risks-grid">
+                <div class="risk-card">
+                    <div class="risk-icon high-risk">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3>Man-in-the-Middle Attacks</h3>
+                    <p>Attackers intercept communications between you and websites to steal data.</p>
+                    <div class="risk-example">
+                        <strong>Example:</strong> Fake Wi-Fi hotspot at a coffee shop
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon high-risk">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Packet Sniffing</h3>
+                    <p>Tools capture unencrypted data sent over the network.</p>
+                    <div class="risk-example">
+                        <strong>Example:</strong> Reading unencrypted email or messages
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon medium-risk">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Evil Twin Attacks</h3>
+                    <p>Fake access points with legitimate-sounding names.</p>
+                    <div class="risk-example">
+                        <strong>Example:</strong> "Airport_Free_WiFi" vs real "Airport-Free-WiFi"
+                    </div>
+                </div>
+                
+                <div class="risk-card">
+                    <div class="risk-icon medium-risk">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3>Malware Distribution</h3>
+                    <p>Infected networks that push malware to connected devices.</p>
+                    <div class="risk-example">
+                        <strong>Example:</strong> Fake update prompts while browsing
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="protection-section">
+            <h2><i class="fas fa-shield-alt"></i> Protection Strategies</h2>
+            
+            <div class="protection-levels">
+                <div class="protection-card essential">
+                    <div class="protection-header">
+                        <h3><i class="fas fa-star"></i> Essential Protection</h3>
+                        <span class="protection-badge">Must Do</span>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Use a reputable VPN service</li>
+                        <li><i class="fas fa-check"></i> Verify network names with staff</li>
+                        <li><i class="fas fa-check"></i> Disable auto-connect features</li>
+                        <li><i class="fas fa-check"></i> Turn off file sharing</li>
+                    </ul>
+                </div>
+                
+                <div class="protection-card recommended">
+                    <div class="protection-header">
+                        <h3><i class="fas fa-thumbs-up"></i> Recommended Practices</h3>
+                        <span class="protection-badge">Should Do</span>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Use HTTPS Everywhere browser extension</li>
+                        <li><i class="fas fa-check"></i> Enable firewall on your device</li>
+                        <li><i class="fas fa-check"></i> Use cellular data for sensitive activities</li>
+                        <li><i class="fas fa-check"></i> Forget networks after use</li>
+                    </ul>
+                </div>
+                
+                <div class="protection-card advanced">
+                    <div class="protection-header">
+                        <h3><i class="fas fa-user-ninja"></i> Advanced Security</h3>
+                        <span class="protection-badge">Extra Protection</span>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Use a privacy-focused DNS</li>
+                        <li><i class="fas fa-check"></i> Set up a travel router with VPN</li>
+                        <li><i class="fas fa-check"></i> Use separate browser profiles</li>
+                        <li><i class="fas fa-check"></i> Consider using a mobile hotspot</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vpn-guide">
+            <h2><i class="fas fa-user-shield"></i> VPN Guide for Public Wi-Fi</h2>
+            
+            <div class="vpn-explanation">
+                <div class="vpn-visual">
+                    <div class="visual-step">
+                        <div class="step-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <div class="step-text">Your Device</div>
+                    </div>
+                    
+                    <div class="visual-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="visual-step encrypted">
+                        <div class="step-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="step-text">Encrypted Tunnel</div>
+                    </div>
+                    
+                    <div class="visual-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="visual-step">
+                        <div class="step-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="step-text">VPN Server</div>
+                    </div>
+                    
+                    <div class="visual-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="visual-step">
+                        <div class="step-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="step-text">Internet</div>
+                    </div>
+                </div>
+                
+                <div class="vpn-benefits">
+                    <h3>VPN Benefits:</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit">
+                            <i class="fas fa-eye-slash"></i>
+                            <h4>Encryption</h4>
+                            <p>Encrypts all data between you and VPN server</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h4>IP Masking</h4>
+                            <p>Hides your real IP address and location</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-user-secret"></i>
+                            <h4>Privacy</h4>
+                            <p>Prevents ISP/network from seeing your activity</p>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-ban"></i>
+                            <h4>Bypass Restrictions</h4>
+                            <p>Access blocked content on restricted networks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vpn-recommendations">
+                <h3><i class="fas fa-medal"></i> Recommended VPN Services</h3>
+                <div class="vpn-services">
+                    <div class="vpn-service">
+                        <h4>ProtonVPN</h4>
+                        <p><strong>Free tier available</strong> • Based in Switzerland • Strong privacy focus</p>
+                        <a href="https://protonvpn.com" class="btn btn-small" target="_blank">Visit</a>
+                    </div>
+                    <div class="vpn-service">
+                        <h4>Mullvad</h4>
+                        <p><strong>Anonymous accounts</strong> • No logging • WireGuard protocol</p>
+                        <a href="https://mullvad.net" class="btn btn-small" target="_blank">Visit</a>
+                    </div>
+                    <div class="vpn-service">
+                        <h4>IVPN</h4>
+                        <p><strong>Transparent company</strong> • Independent audits • Multi-hop</p>
+                        <a href="https://ivpn.net" class="btn btn-small" target="_blank">Visit</a>
+                    </div>
+                    <div class="vpn-service">
+                        <h4>Windscribe</h4>
+                        <p><strong>Generous free plan</strong> • Built-in ad blocker • Custom plans</p>
+                        <a href="https://windscribe.com" class="btn btn-small" target="_blank">Visit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activities-guide">
+            <h2><i class="fas fa-tasks"></i> Safe vs Risky Activities on Public Wi-Fi</h2>
+            
+            <div class="activities-grid">
+                <div class="activity-category safe">
+                    <h3><i class="fas fa-check-circle"></i> Generally Safe</h3>
+                    <div class="activity-list">
+                        <div class="activity">
+                            <i class="fas fa-newspaper"></i>
+                            <span>Reading news/articles</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-map"></i>
+                            <span>Checking maps/directions</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-utensils"></i>
+                            <span>Looking at restaurant menus</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-cloud-sun"></i>
+                            <span>Checking weather forecasts</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-category risky">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Use with VPN</h3>
+                    <div class="activity-list">
+                        <div class="activity">
+                            <i class="fas fa-envelope"></i>
+                            <span>Checking email</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Online shopping</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-comments"></i>
+                            <span>Social media</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-video"></i>
+                            <span>Streaming videos</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-category dangerous">
+                    <h3><i class="fas fa-skull-crossbones"></i> Avoid Completely</h3>
+                    <div class="activity-list">
+                        <div class="activity">
+                            <i class="fas fa-university"></i>
+                            <span>Online banking</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Bill payments</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Logging into sensitive accounts</span>
+                        </div>
+                        <div class="activity">
+                            <i class="fas fa-file-medical"></i>
+                            <span>Medical/health portals</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="device-settings">
+            <h2><i class="fas fa-cog"></i> Device Settings Checklist</h2>
+            
+            <div class="settings-checklist">
+                <div class="setting-item">
+                    <input type="checkbox" id="setting1">
+                    <label for="setting1">
+                        <strong>Turn off auto-connect to Wi-Fi networks</strong>
+                        <p>Prevents automatically connecting to saved or open networks</p>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="setting2">
+                    <label for="setting2">
+                        <strong>Disable file sharing</strong>
+                        <p>Turn off AirDrop, Nearby Sharing, or network discovery</p>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="setting3">
+                    <label for="setting3">
+                        <strong>Enable firewall</strong>
+                        <p>Activate built-in firewall in system settings</p>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="setting4">
+                    <label for="setting4">
+                        <strong>Forget networks after use</strong>
+                        <p>Remove public networks from saved networks list</p>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="setting5">
+                    <label for="setting5">
+                        <strong>Use cellular data for sensitive tasks</strong>
+                        <p>Switch to mobile data for banking or shopping</p>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="setting6">
+                    <label for="setting6">
+                        <strong>Keep software updated</strong>
+                        <p>Ensure OS and security software are current</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="emergency-response">
+            <h2><i class="fas fa-first-aid"></i> What to Do If Compromised</h2>
+            
+            <div class="response-steps">
+                <div class="response-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Disconnect Immediately</h4>
+                        <p>Turn off Wi-Fi and disconnect from the network</p>
+                    </div>
+                </div>
+                
+                <div class="response-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Change Passwords</h4>
+                        <p>Change passwords for any accounts accessed</p>
+                    </div>
+                </div>
+                
+                <div class="response-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Check Accounts</h4>
+                        <p>Look for suspicious activity in financial and email accounts</p>
+                    </div>
+                </div>
+                
+                <div class="response-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Run Security Scan</h4>
+                        <p>Scan device for malware or keyloggers</p>
+                    </div>
+                </div>
+                
+                <div class="response-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Enable 2FA</h4>
+                        <p>Add two-factor authentication to important accounts</p>
+                    </div>
+                </div>
+                
+                <div class="response-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h4>Monitor Credit</h4>
+                        <p>Watch for unusual credit activity if financial info was exposed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="travel-tips">
+            <h2><i class="fas fa-suitcase"></i> Travel Security Tips</h2>
+            
+            <div class="travel-grid">
+                <div class="travel-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <h4>Use Your Own Hotspot</h4>
+                    <p>Consider a portable Wi-Fi hotspot or use smartphone tethering</p>
+                </div>
+                
+                <div class="travel-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h4>Hotel Wi-Fi Caution</h4>
+                    <p>Hotel networks are prime targets. Always use VPN.</p>
+                </div>
+                
+                <div class="travel-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h4>Airport & Airplane Wi-Fi</h4>
+                    <p>Treat all airport and in-flight Wi-Fi as potentially compromised</p>
+                </div>
+                
+                <div class="travel-tip">
+                    <div class="tip-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h4>Travel Devices</h4>
+                    <p>Consider using a separate device for travel with minimal personal data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.risks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.risk-card {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-top: 4px solid;
+}
+
+.risk-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.risk-icon.high-risk {
+    background-color: #fdf2f2;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.risk-icon.medium-risk {
+    background-color: #fef9f3;
+    color: #f39c12;
+    border-color: #f39c12;
+}
+
+.risk-example {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.protection-levels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.protection-card {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 2px solid;
+}
+
+.protection-card.essential {
+    border-color: #e74c3c;
+    background-color: #fdf2f2;
+}
+
+.protection-card.recommended {
+    border-color: #f39c12;
+    background-color: #fef9f3;
+}
+
+.protection-card.advanced {
+    border-color: #3498db;
+    background-color: #f3f9fe;
+}
+
+.protection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.protection-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.protection-card.essential .protection-badge {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.protection-card.recommended .protection-badge {
+    background-color: #f39c12;
+    color: white;
+}
+
+.protection-card.advanced .protection-badge {
+    background-color: #3498db;
+    color: white;
+}
+
+.protection-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.protection-card li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.protection-card li i {
+    color: var(--success-color);
+    margin-top: 0.2rem;
+}
+
+.vpn-explanation {
+    margin: 1.5rem 0;
+}
+
+.vpn-visual {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.visual-step {
+    text-align: center;
+    flex: 1;
+    min-width: 120px;
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.visual-step.encrypted .step-icon {
+    color: var(--success-color);
+}
+
+.visual-arrow {
+    color: var(--gray-color);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.benefit {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.benefit i {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.vpn-services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.vpn-service {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.activity-category {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 2px solid;
+}
+
+.activity-category.safe {
+    border-color: #27ae60;
+    background-color: #f3faf6;
+}
+
+.activity-category.risky {
+    border-color: #f39c12;
+    background-color: #fef9f3;
+}
+
+.activity-category.dangerous {
+    border-color: #e74c3c;
+    background-color: #fdf2f2;
+}
+
+.activity-list {
+    margin-top: 1rem;
+}
+
+.activity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+}
+
+.activity i {
+    color: var(--secondary-color);
+}
+
+.settings-checklist {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 1.5rem 0;
+}
+
+.setting-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--secondary-color);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.setting-item label {
+    flex: 1;
+}
+
+.response-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.response-step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.travel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.travel-tip {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.tip-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle checklist items
+    const checkboxes = document.querySelectorAll('.settings-checklist input[type="checkbox"]');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.parentElement.style.opacity = '0.6';
+                this.parentElement.style.textDecoration = 'line-through';
+            } else {
+                this.parentElement.style.opacity = '1';
+                this.parentElement.style.textDecoration = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
